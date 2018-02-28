@@ -1,0 +1,16 @@
+
+{% for profile in profiles %}
+    <div class="email-profile" style="float: left; border: solid 1px #ddd; border-radius: 5px; width: {{ 100 / profiles|length - 6.5  }}%; margin: 0 3%;">
+        <div class="pad-profile center-text" style="padding: 30px; text-align: center;">
+            <div class="email-img-container" style="margin: 0 auto; border-radius: 50%; height: 120px; overflow: hidden; width: 120px; background: #777 url('{{ domain }}{{ profile.getThumbLink() }}') center; background-size: cover;"></div>
+            <h3>{{ profile.getName() }}</h3>
+            <div class="blurb" style="color: #777; font-size: 15px; line-height: 20px; max-height: 120px; overflow: hidden;">{{ profile.getBlurb()|raw }}</div>
+            {% if type == 'instructor' %}
+                {% set link = path_for(type, {'instructorId': profile.getId()}) %}
+            {% else %}
+                {% set link = path_for(type, {'organizationId': profile.getId()}) %}
+            {% endif %}
+            <a class="verify button" href="{{ domain }}{{ link }}" style="background: #2895F1; border: 1px solid #007ee5; border-radius: 5px; color: white; display: block; font-size: 16px; font-weight: 300; line-height: 24px; margin: 15px auto 0 auto; max-width: 200px; padding: 7px 16px; text-align: center; text-decoration: none; width: 85%;">Read More</a>
+        </div>
+    </div>
+{% endfor %}

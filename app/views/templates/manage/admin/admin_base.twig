@@ -1,0 +1,22 @@
+{% extends 'manage/manage_base.twig' %}
+{% block title %}Site Admin Panel{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    <aside id="manage-nav">
+        <ul>
+            <li><a href="/admin-panel/global-settings"><i class="icon-home"></i>Global Settings</a></li>
+            <li><a href="/admin-panel/page"><i class="icon-doc-text-inv"></i>Pages</a></li>
+            <li><a href="/admin-panel/accounts"><i class="icon-user"></i>Accounts</a></li>
+            <li><a href="/admin-panel/organization"><i class="icon-commerical-building"></i>Organizations</a></li>
+            <li><a href="/admin-panel/instructor"><i class="icon-user"></i>Instructors</a></li>
+            <li><a href="/admin-panel/event"><i class="icon-calendar"></i>Events</a></li>
+            <li><a href="/admin-panel/email-tool"><i class="icon-mail"></i>Email Tool</a></li>
+        </ul>
+    </aside>
+    <section id="manage-body">
+        {% block manageBody %}{% endblock %}
+    </section>
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'manage/manage_base.twig' %}
+{% block title %}Organization Panel{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    <nav id="profile-nav">
+        <ul>
+            <li><a href="/organization-panel/all"><i class="icon-layout"></i>All Organizations</a></li>
+            <li><a href="/organization-panel/{{ organization.getId() }}/profile"><i class="icon-commerical-building"></i>Profile</a></li>
+            <li><a href="/organization-panel/{{ organization.getId() }}/event"><i class="icon-calendar"></i>Events</a></li>
+        </ul>
+    </nav>
+    <section data-current-organization-id="{{ organization.getId() }}">
+        {% block manageBody %}{% endblock %}
+    </section>
+
+
+{% endblock %}

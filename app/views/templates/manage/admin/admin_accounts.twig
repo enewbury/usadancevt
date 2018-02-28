@@ -1,0 +1,72 @@
+{% extends 'manage/admin/admin_base.twig' %}
+
+{% block manageNav %}
+    {% include 'manage/admin/admin_nav.twig' %}
+{% endblock %}
+
+{% block manageBody %}
+    <div id="accounts" xmlns="http://www.w3.org/1999/html">
+        <a id="new-user-button" class="new-button"><i class="icon-plus"></i><b>New User</b></a>
+        <h2 class="padding-15 margin-0">Accounts</h2>
+        {% include 'components/validation_box.twig' %}
+
+        <form method="post" class="new-form border hidden margin-15 padding-15 background-white form-horizontal clear" id="new-user-form">
+            <input type="text" placeholder="First Name" name="first">
+            <input type="text" placeholder="Last Name" name="last">
+            <input type="text" placeholder="Email" name="email">
+            <b><button class="btn-third blue padding-12 margin-10-vert" type="submit" value="Create">Create & Notify</button></b>
+            <p>
+                <h4 class="clear-current">Welcome Message</h4>
+                <textarea data-absolute-urls="true" class="editor" name="message">
+                    <p>Hi {name},</p>
+                    <p>This is Chelsea, Membership Coordinator of the USA Dance Green Mountain Chapter. I would like to invite you to log into the new Instructor Account I have made for you and personalize your profile on Chapter #3033's new web platform.</p>
+                    <p>Through this custom platform, local instructors can update their profiles from their desktop or smartphone, with no middleman. They can add events and see what is going on in the dance community without fishing through emails.</p>
+                    <p>With your involvement, this website can become a comprehensive tool for dancers in our state and beyond; a hub of information, and subsequently, a resource to bring in new students. If you have any questions, feel free to message myself at cldavids93@gmail.com or any board member at usadancevt@gmail.com.</p>
+                    <p>Here's a 10 minute walkthrough to get you started using the site.<br>
+                    <a href="https://youtu.be/vCj22DtPty8"><img style="width:100%; max-width: 500px;" src="{{ siteDomain }}/img/walkthroughThumb.png"></a>
+                    </p>
+                    <p>Sincerely,<br>Chelsea Davidson</p>
+
+                </textarea>
+            </p>
+        </form>
+        <div class="background-white margin-15">
+            <table class="margin-15-top">
+                <tr>
+                    <th>Name</th>
+                    <th>Active</th>
+                    <th class="low-priority">Created</th>
+                    <th>Permissions</th>
+                    <th>Remove</th>
+                </tr>
+                {% for user in users %}
+                <tr class="user-data" data-id="{{ user.getId() }}">
+                    <td>{{ user.getFirstname() }} {{ user.getLastName() }}</td>
+                    <td><span class="activate-switch switch {% if user.isActive() %}on{% endif %}"></span></td>
+                    <td class="low-priority">{{ user.getCreatedAt()|date('M d Y') }}</td>
+                    <td>
+
+                        {# ADMIN #}
+                        <a title="Site Admin Permission" data-association="ADMIN" class="associations-popup no-underline toggle-account {% if user.isApprovedSiteAdmin() %}approved{% elseif user.isPendingSiteAdmin() %}pending{% endif %}">
+                            <i class="icon-key"></i>
+                        </a>
+
+                        {# INSTRUCTOR #}
+                        <a title="Instructor Admin Permission" data-association="USER_MANAGES_INSTRUCTOR" class="associations-popup no-underline toggle-account {% if user.isActiveInstructorAdmin() %}active{% endif %}">
+                            <i class="icon-user"></i>
+                        </a>
+
+                        {# ORGANIZATION #}
+                        <a title="Organization Admin Permission" data-association="USER_MANAGES_ORGANIZATION" class="associations-popup no-underline toggle-account {% if user.isActiveOrganizationAdmin() %}active{% endif %}">
+                            <i class="icon-commerical-building"></i>
+                        </a>
+                    </td>
+                    <td><a class="icon-cancel btn-third red delete-user"></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+

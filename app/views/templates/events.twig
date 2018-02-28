@@ -1,0 +1,30 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+
+{% block content %}
+    {% set baseUrl = currentUrl %}
+    <section id="event-map" class="banner-image background-dark-grey"></section>
+    <section class="site-width section-padding background-white padding-15-horiz">{{ introduction|raw }}</section>
+    <section class="background-dark-grey section-padding">
+        {% set activeOnly = true %}
+        {% include 'components/event_list.twig' %}
+    </section>
+
+    <script id="eventsJson" type="application/json">
+        {{ events|json_encode()|raw }}
+    </script>
+    <script id="mapEventHtml" type="text/html">
+        <div class="maps-mini-event">
+            <div class="event-img-container img-container span-4-gap no-break"></div>
+            <div class="span-8 no-break"><b class="title"></b><br><span class="date"></span><br><a href="{{ baseUrl }}">View Event</a></div>
+            <div class="clear-current"></div>
+        </div>
+    </script>
+{% endblock %}
+
+{% block script %}/js/generated/baseAndMaps.js{% endblock %}
+{% block afterScript %}
+{{ parent() }}
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByPL8LN6zPXO1IK2tdVrglnNOx5jBvc-4&callback=initEventsClusterMap"></script>
+{% endblock %}

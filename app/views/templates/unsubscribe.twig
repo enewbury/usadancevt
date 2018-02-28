@@ -1,0 +1,19 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}Unsubscribe{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    {% if status and status == "success" %}
+        <div class="info-box margin-50">You have been unsubscribed successfully.</div>
+    {% else %}
+        <form id="unsubscribe-form" class="account-form clear padding-15-horiz" method="post">
+            <h3>Enter Email</h3>
+            {% include "components/validation_box.twig" %}
+
+            <input type="text" name="email" autofocus placeholder="email" {% if status != "success" %}value="{{ data.email }}"{% endif %}>
+            <hr>
+            <button type="submit" class="btn-primary">Unsubscribe</button>
+        </form>
+    {% endif %}
+{% endblock %}

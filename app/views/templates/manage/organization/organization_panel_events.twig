@@ -1,0 +1,7 @@
+{% extends 'manage/organization/organization_base.twig' %}
+
+{% block manageBody %}
+    {% set panelType = 'organization' %}
+    {% set baseUrl = path_for(panelType~'EventList', {'id': organization.getId()}) %}
+    {% include 'components/event_list.twig'%}
+{% endblock %}

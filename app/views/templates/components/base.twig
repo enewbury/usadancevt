@@ -1,0 +1,109 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>
+        {% block title %}{% endblock %}
+        {% set _titleblock = block('title') %}
+        {% if _titleblock is not empty %} - {% endif %}
+        {{ siteName }}</title>
+
+    <meta name="description" content="USA Dance, Inc is a 501(c)3 non-profit dedicated to spreading ballroom dance through education and opportunity">
+    <meta name="author" content="USA Dance Green Mountain Chapter">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/icon-fonts/css/icons.css">
+
+    {% block ogTags %}{% endblock %}
+    {% if favicon %}<link rel="icon" type="image/png" href="{{ favicon }}">{% endif %}
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body class="{% block bodyClass %}{% endblock %}">
+    <header>
+        <div class="header-content clear">
+            <a href="/" class="logo-box"><img class="logo-icon" src="{{ logoImg }}"><span class="logo-text">{{ logoText|raw }}</span></a>
+            <a id="slab-button">MENU</a>
+            <nav>
+                {% include "components/nav.twig" %}
+                {% if user %}
+                    {% include "components/user_nav.twig" %}
+                {% endif %}
+                {% if user %}
+                    {% include "components/account_panel.twig" %}
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <div class="content clear {% block contentClass %}{% endblock %}">{% block content %}{% endblock %}
+        <div id="message-box-container"></div>
+    </div>
+    {% block footer %}
+        <footer>
+            <div class="top-tier">
+                <div class="site-width clear padding-15-horiz">
+                    <div class="span-4-gap left-col">{{ footerLeftCol|raw }}</div>
+                    <div class="span-4-gap">
+                        <h3>Stepping Out Newsletter</h3>
+                        <form method="post" action="/subscribe">
+                            <input type="text" placeholder="Your Name" name="subscriberName">
+                            <input type="text" placeholder="Your Email" name="subscriberEmail">
+                            <button type="submit" class="margin-15-top width-100 btn-third blue">Subscribe</button>
+                        </form>
+                    </div>
+                    <div class="span-4">{{ footerRightCol|raw }}</div>
+                </div>
+            </div>
+            <div class="bottom-tier">
+                <div class="site-width padding-15-horiz">
+                    <span>&copy; {{ "now"|date("Y") }} USA Dance Green Mountain Chapter | Developed by Eric Newbury</span>
+                    <span class="float-right">
+                        {% if twitterLink %}<a class="icon-twitter-circled" href="{{ twitterLink }}"></a>{% endif %}
+                        {% if facebookLink %}<a class="icon-facebook-circled" href="{{ facebookLink }}"></a>{% endif %}
+                        <strong><a href="/login">Login</a> | <a href="/account/create">Create Account</a></strong> </span>
+                </div>
+            </div>
+
+        </footer>
+    {% endblock %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-76265503-2', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+    <input class="hidden" id="ajax-file-input" type="file">
+    {% block bottomIncludes %}
+        <script src="/js/cookies.js"></script>
+
+        {# Select2 #}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+
+        {# Sortable #}
+        <link href="/js/jquery-ui.min.css" rel="stylesheet">
+        <script src="/js/jquery-ui.min.js"></script>
+        <script src="/js/select2-sortable.js"></script>
+
+        {# DatePicker #}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/pikaday.min.js"></script>
+    {% endblock %}
+    <script src={% block script %}"/js/generated/app.js"{% endblock %}></script>
+    {% block afterScript %}{% endblock %}
+</body>
+</html>

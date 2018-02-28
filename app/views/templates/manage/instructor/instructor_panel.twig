@@ -1,0 +1,59 @@
+{% extends 'manage/manage_base.twig' %}
+
+{% block title %}Instructor Panel{% endblock %}
+{% block bodyClass %}{{ parent() }} background-grey{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    <section id="instructors" class="margin-30-top padding-15 site-width">
+        <h2>My Instructors</h2>
+        {% include 'components/validation_box.twig' %}
+        <div class="tile-container clear">
+            {# CREATE NEW #}
+            <form method="post" class="position-relative padding-15 center-text background-white tile medium-tile-short">
+                <i class="icon-plus icon-circle-big"></i>
+                <select class="width-100 margin-15-top" name="instructorId">
+                    <option value="-1">Select Instructor</option>
+                    <option value="new">Create New Instructor</option>
+                    {% for instructor in allInstructors %}
+                        <option value="{{ instructor.getId() }}">{{ instructor.getName() }}</option>
+                    {% endfor %}
+                </select>
+
+                <div class="hidden create-new">
+                    <input class="background-grey center-text" type="text" name="newInstructor" placeholder="Name">
+                </div>
+
+                <button type="submit" class="position-bottom position-left width-100 btn-primary">Request Instructor</button>
+            </form>
+
+            {# ACTIVE INSTRUCTORS #}
+            {% for instructor in approvedInstructors %}
+                <a href="{{ path_for('instructorPanelHome') }}/{{ instructor.getId() }}/profile" title="{{ instructor.getName() }}" class="background-white tile medium-tile-short" data-id="{{ instructor.getId() }}">
+                    <div class="img-container clear" style="{% if instructor.getImageLink() %}background-image: url('{{ instructor.getImageLink() }}');{% endif %}"></div>
+                    <h3 class="center-text fade">{{ instructor.getName() }}</h3>
+                    <div class="top-slider width-100 clear padding-12 center-text">
+                        <span style="margin-top:7px;" class="activate-switch activate-instructor switch dark float-left {% if organization.isActive() %}on{% endif %}"></span>
+                        <span class="icon-logout big-icon remove-access" title="Remove Access"></span>
+                        <span class="icon-cancel float-right btn-third red delete-instructor"></span>
+                    </div>
+                </a>
+            {% endfor %}
+
+            {# PENDING INSTRUCTORS #}
+            {% for instructor in pendingInstructors %}
+                <div title="{{ instructor.getName() }}" class="background-white tile medium-tile-short" data-id="{{ instructor.getId() }}">
+                    <div class="img-container position-relative clear" style="{% if instructor.getImageLink() %}background-image: url('{{ instructor.getImageLink() }}');{% endif %}">
+                        <div class="icon-dot-3 pending-overlay"></div>
+                    </div>
+                    <h3 class="center-text fade">{{ instructor.getName() }}</h3>
+                    <div class="top-slider width-100 clear padding-12 center-text">
+                        <span class="icon-logout big-icon remove-access" title="Remove Access"></span>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+{% endblock %}

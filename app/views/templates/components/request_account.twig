@@ -1,0 +1,10 @@
+{% extends 'components/base.twig' %}
+{% block bodyClass %}background-grey{% endblock %}
+
+{% block content %}
+<section class="background-white center-box border margin-50">
+    <h3 class="padding-15 border-bottom center-text">{{ block('title') }}</h3>
+    {% block requestForm %}{% endblock %}
+</section>
+
+{% endblock %}

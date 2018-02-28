@@ -1,0 +1,19 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    <form id="create-account-form" class="account-form padding-15-horiz" method="post">
+
+        {% include "components/validation_box.twig" %}
+
+        <input type="text" name="first" autofocus class="input-40" placeholder="First Name" {% if status != "SUCCESS" %}value="{{ data.first }}"{% endif %}><input type="text" name="last" class="input-60" placeholder="Last Name" {% if status != "SUCCESS" %}value="{{ data.last }}"{% endif %}>
+        <input type="text" name="email" placeholder="Email" {% if status != "SUCCESS" %}value="{{ data.email }}"{% endif %}>
+        <input type="password" name="password" placeholder="Password">
+        <input type="password" name="confirm" placeholder="Confirm Password">
+        <hr>
+        <button type="submit" class="btn-primary">CREATE ACCOUNT</button>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+
+{% block ogTags %}
+    {% if event.getImageLink() %}<meta property="og:image" content="{{ siteDomain }}{{ event.getImageLink() }}" />{% endif %}
+{% endblock %}
+
+{% block content %}
+    {% set baseUrl = currentUrl %}
+
+    <div class="fixed-head-pad"></div>
+    <section id="site-event-profile" class="background-dark-grey section-padding clear">
+        <div class="site-width">
+            {# SIDEBAR #}
+            <div class="span-2 event-links">
+                <a href="{{ path_for('events', {'slug': 'events'}) }}"><i class="icon-layout"></i> All Events</a>
+                <h4 class="margin-15-top">More By Instructor{% if event.getApprovedInstructors(true)|length >1 %}s{% endif %}</h4>
+                {% for event in instructorEvents %}
+                    <div>
+                        <a  href="{{ path_for('event', {'eventId': event.getId()}) }}{% if event.isRepeating() %}/date/{{ event.getStartDatetime().getTimestamp() }}{% endif %}" class="two-line-ellipsis">{{ event.getName() }}</a>
+                        <small class="light-text">{{ DateTool.getColloquial(event.getStartDatetime()) }}</small>
+                    </div>
+                {% endfor %}
+                
+                <h4 class="margin-30-top">More By Host{% if event.getApprovedOrganizations(true)|length >1 %}s{% endif %}</h4>
+                {% for event in organizationEvents %}
+                    <div>
+                        <a href="{{ path_for('event', {'eventId': event.getId()}) }}{% if event.isRepeating() %}/date/{{ event.getStartDatetime().getTimestamp() }}{% endif %}" class="two-line-ellipsis">{{ event.getName() }}</a>
+                        <small class="light-text">{{ DateTool.getColloquial(event.getStartDatetime()) }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# PROFILE AREA #}
+            <div class="span-10">
+                {# Profile Header #}
+                <div class="border background-white profile-header">
+                    <div class="big-container">
+                        <div class="span-4 info-area vertical-center center-text">
+                            <div>
+                                {% set start = event.getStartDatetime() %}
+                                {% set end = event.getEndDatetime() %}
+                                <div class="date-box"><span class="large">{{ start|date('d') }}</span><br><span>{{ start|date('M') }}</span></div>
+                                <h2 class="three-line-ellipsis">{{ event.getName() }}</h2>
+                                <div class="time-box margin-15-top">
+                                    <span><i class="icon-clock"></i>{% if event.isAllDay() %}All Day{% else %}{{ start|date('g:iA') }}{% if end %} - {{ end|date('g:iA') }}{% endif %}{% endif %}</span>
+                                    {% if event.getFacebook() %}<a class="inherit-color" href="{{ event.getFacebook() }}"><i class="icon-facebook"></i> View on Facebook</a>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span-8 img-container" style="{% if event.getImageLink() %}background-image: url('{{ event.getImageLink() }}');{% endif %}"></div>
+                    </div>
+
+                    <div class="bottom-strip padding-15">
+                        <div class="relations inline-block">
+                            {% set instructors = event.getApprovedInstructors(true) %}
+                            {% if instructors|length %}
+                                <div class="margin-10-right inline-block">
+                                    <span><i class="icon-user"></i>Instructor{% if instructors|length > 1%}s{% endif %} </span>
+                                    {% for instructor in event.getApprovedInstructors(true) %}
+                                        <span class="relation"><a href="{{ path_for('instructor',{'instructorId': instructor.getId()}) }}">{{ instructor.getName() }}</a>{% if loop.index < instructors|length-1 %}, {% elseif loop.index == instructors|length-1 %} and {% endif %}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% set organizations = event.getApprovedOrganizations(true) %}
+                            {% if organizations|length %}
+                                <div class="margin-10-right inline-block">
+                                    <span><i class="icon-commerical-building"></i>Host{% if organizations|length > 1%}s{% endif %} </span>
+                                    {% for organization in event.getApprovedOrganizations(true) %}
+                                        <span class="relation"><a href="{{ path_for('organization', {'organizationId': organization.getId()}) }}">{{ organization.getName() }}</a>{% if loop.index < organizations|length-1 %}, {% elseif loop.index == organizations|length-1 %} and {% endif %}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="inline-block float-right clear-current">
+                            <span>Category: <a href="{{ path_for('events', {'slug': 'events'}) }}?category={{ event.getCategory().getId() }}">{{ event.getCategory().getValue() }} <span class="tiny-circle" style="background-color: {{ event.getCategory().getColor() }}"></span></a></span>
+                        </div>
+                    </div>
+                </div>{# End Profile Header #}
+
+                {# Profile Body Section #}
+                <div class="profile-body-section margin-30-top">
+                    <div class="span-8-gap border background-white padding-15 generated-content"><h2>{{ event.getName() }}</h2>{{ event.getDescription()|raw }}</div>
+                    <div class="span-4">
+                        <div class="details-box background-white padding-15 border light-tex-box clear">
+                            <i class="icon-clock"></i>
+                            <div class="details clear">
+                                {% if event.isAllDay() %}
+                                    <span>All Day</span><span></span>
+                                {% else %}
+                                    <span>starts:&nbsp;</span><span>{{ start|date('M d Y \a\t g:iA') }}</span>
+                                    {% if end %}<span>ends:&nbsp;</span><span>{{ end|date('M d Y \a\t g:iA') }}</span>{% endif %}
+                                {% endif %}
+                                {% if event.isRepeating() %}<span>repeats:&nbsp;</span><span>{{ event.getFullRepeatDays() }}</span>{% endif %}
+                            </div>
+                        </div>
+                        {% if event.getLocation() or event.getCoordinates() %}
+                        <div class="details-box background-white padding-15 border light-tex-box margin-15-top clear">
+                            <i class="icon-location"></i>
+                            <div class="location-details">
+                                {% set locationAr = event.getLocation|split(', ') %}
+                                {% for component in locationAr %}
+                                    {% if loop.first %}
+                                        <span class="normal-text">{{ component }}</span><br>
+                                    {% else %}
+                                        {{ component }}{% if not loop.last %}, {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            {% if event.getCoordinates() %}
+                                <div id="location-map" data-location-name="{{ event.getLocation() }}" data-coordinates="{{ event.getCoordinates() }}"></div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                </div>{# End Profile Body Section #}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block bottomIncludes %}
+    {{ parent() }}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByPL8LN6zPXO1IK2tdVrglnNOx5jBvc-4&callback=initLocationMap"></script>
+{% endblock %}
+{% block script %}/js/generated/baseAndMaps.js{% endblock %}

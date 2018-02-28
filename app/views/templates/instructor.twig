@@ -1,0 +1,88 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+{% block ogTags %}
+    {% if instructor.getCoverPhoto() %}<meta property="og:image" content="{{ siteDomain }}{{ instructor.getCoverPhoto() }}" />{% endif %}
+{% endblock %}
+{% block content %}
+    {% set baseUrl = currentUrl %}
+    <div class="fixed-head-pad"></div>
+    <section id="site-instructor-profile" class="background-dark-grey section-padding clear">
+        <div class="site-width">
+
+            {# PROFILE AREA #}
+            <div class="padding-15">
+                {# Profile Header #}
+                <div class="border background-white profile-header">
+                    <div class="big-container">
+                        <div class="span-4 info-area vertical-center center-text">
+                            <div>
+                                <div class="img-container round-220 inline-block" style="{% if instructor.getImageLink() %}background-image: url('{{ instructor.getImageLink() }}');{% endif %}"></div>
+                                <h2>{{ instructor.getName() }}</h2>
+                            </div>
+                        </div>
+                        <div class="span-8 img-container" style="{% if instructor.getCoverPhoto() %}background-image: url('{{ instructor.getCoverPhoto() }}');{% endif %}"></div>
+                    </div>
+
+                    <div class="bottom-strip padding-15">
+                        <div class="relations inline-block">
+                            {% set organizations = instructor.getApprovedOrganizations(true) %}
+                            {% if organizations|length %}
+                                <div class="margin-10-right inline-block">
+                                    <span><i class="icon-commerical-building"></i>Teaches For: </span>
+                                    {% for organization in instructor.getApprovedOrganizations(true) %}
+                                        <span class="relation"><a href="{{ path_for('organization', {'organizationId': organization.getId()}) }}">{{ organization.getName() }}</a>{% if loop.index < organizations|length-1 %}, {% elseif loop.index == organizations|length-1 %} and {% endif %}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="inline-block float-right clear-current">
+                            <span>Category: <a href="{{ path_for('instructors', {'slug': 'instructors'}) }}?category={{ instructor.getCategory().getId() }}">{{ instructor.getCategory().getValue() }} <span class="tiny-circle" style="background-color: {{ instructor.getCategory().getColor() }}"></span></a></span>
+                        </div>
+                    </div>
+                </div>{# End Profile Header #}
+
+                {# Profile Body Section #}
+                <div class="profile-body-section margin-30-top">
+                    <div class="span-8-gap border background-white padding-15 generated-content">{{ instructor.getDescription()|raw }}</div>
+                    <div class="span-4">
+
+                        <div class="details-box background-white padding-15 border light-tex-box clear">
+                            <h3 class="center-text margin-15-bottom">Contact</h3>
+                            {% if instructor.getEmail() %}<div class="margin-15-top"><label>Email:</label>&nbsp;<div class="float-right normal-text"><a href="mailto:{{ instructor.getEmail() }}">{{ instructor.getEmail() }}</a></div></div>{% endif %}
+                            {% if instructor.getPhone() %}<div class="margin-15-top"><label>Phone:</label>&nbsp;<div class="float-right normal-text">{{ instructor.getPhone()|phone }}</div></div>{% endif %}
+                            {% if instructor.getWebsite() %}<div class="margin-15-top"><label>Website:</label>&nbsp;<div class="float-right normal-text"><a target="_blank" href="{{ instructor.getWebsite() }}">{{ instructor.getWebsite() }}</a></div></div>{% endif %}
+                            {% if instructor.getFacebook() %}<div class="margin-15-top"><label>Facebook:</label>&nbsp;<div class="float-right normal-text"><a target="_blank" href="{{ instructor.getFacebook() }}">View Profile</a></div></div>{% endif %}
+                            {% if instructor.getTwitter() %}<div class="margin-15-top"><label>Twitter:</label>&nbsp;<div class="float-right normal-text"><a target="_blank" href="{{ instructor.getTwitter() }}">View Profile</a></div></div>{% endif %}
+                        </div>
+                        <div class="details-box background-white padding-15 border light-tex-box margin-15-top clear">
+                            <i class="icon-location"></i>
+                            <div class="location-details">
+                                {% set locationAr = instructor.getLocation|split(', ') %}
+                                {% for component in locationAr %}
+                                    {% if loop.first %}
+                                        <span class="normal-text">{{ component }}</span><br>
+                                    {% else %}
+                                        {{ component }}{% if not loop.last %}, {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            {% if instructor.getCoordinates() %}
+                                <div id="location-map" data-location-name="{{ instructor.getLocation() }}" data-coordinates="{{ instructor.getCoordinates() }}"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>{# End Profile Body Section #}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}/js/generated/baseAndMaps.js{% endblock %}
+{% block afterScript %}
+    {{ parent() }}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByPL8LN6zPXO1IK2tdVrglnNOx5jBvc-4&callback=initLocationMap"></script>
+{% endblock %}

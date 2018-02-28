@@ -1,0 +1,47 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    {% if introduction is not empty %}<section class="section-padding site-width padding-15-horiz">{{ introduction|raw }}</section>{% endif %}
+    <section class="background-dark-grey section-padding">
+        <div id="instructors" class="site-width">
+            <h2 class="padding-15 margin-0 margin-15-top">Organizations</h2>
+            <form class="filter-controls-horizontal padding-15">
+                <input type="text" name="searchQuery" placeholder="Search" class="grey-bordered-input thin-input" value="{{ searchQuery }}">
+                <select name="instructor">
+                    <option value="-1">Has Instructor</option>
+                    {% for o in instructors %}
+                        <option {% if filteringInstructor and filteringInstructor.getId() == o.getId() %}selected {% endif %}value="{{ o.getId() }}">{{ o.getName() }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="category">
+                    <option value="-1">Category</option>
+                    {% for c in categories %}
+                        <option {% if filteringCategory and filteringCategory.getId() == c.getId() %}selected {% endif %}value="{{ c.getId() }}">{{ c.getValue() }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="county" class="">
+                    <option value="-1">Location</option>
+                    {% for c in counties %}
+                        <option {% if filteringCounty and filteringCounty == c %}selected {% endif %}value="{{ c }}">{{ c }}</option>
+                    {% endfor %}
+                </select>
+                <button class="no-loading btn-third blue btn-padding margin-15-horiz" type="submit">Filter</button>
+                <button class="no-loading btn-third btn-padding" type="reset">Reset</button>
+            </form>
+
+            <div class="tile-container padding-15 clear">
+                {% for organization in organizations %}
+                    <a href="{{ path_for('organizations') }}/{{ organization.getId() }}" class="tile background-white" data-id="{{ organization.getId() }}">
+                        <div class="img-container clear" style="{% if organization.getImageLink() %}background-image: url('{{ organization.getImageLink() }}');{% endif %}"></div>
+                        <h3 class="center-text fade">{{ organization.getName() }}</h3>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

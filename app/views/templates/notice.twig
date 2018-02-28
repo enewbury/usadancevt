@@ -1,0 +1,14 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    {% include "components/validation_box.twig" %}
+    {% if not status or status == "success" %}
+        <div class="margin-50 info-box center-text">{{ notice }}
+            {% if linkText %}<br><div class="center-text"><a href="{{ linkHref }}">{{ linkText }}</a></div>{% endif %}
+        </div>
+    {% endif %}
+
+{% endblock %}

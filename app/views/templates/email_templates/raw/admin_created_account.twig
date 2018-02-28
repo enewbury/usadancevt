@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<link rel="stylesheet" href="email_style.css">
+<div class="head"><img src="{{ domain }}/img/full_logo.png"></div>
+<div class="content">
+    {{ message|raw }}
+    <a class="verify" href="{{ domain }}/account/reset-password/{{userId}}?token={{code}}" style="display: inline-block;max-width: 200px;width: 100%;text-align: center;font-size: 16px;font-weight: 300;background: #2895F1;text-decoration: none;border: 1px solid #007ee5;line-height: 24px;padding: 7px 16px;border-radius: 5px;color: white;">Choose Password</a>
+    <p>{{ domain }}/account/reset-password/{{userId}}?token={{code}}</p>
+</div>
+</body>
+</html>

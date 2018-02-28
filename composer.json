@@ -1,0 +1,34 @@
+{
+    "name": "enewbury/dancevt",
+    "description": "Website, event and newsletter management system for the vermont chapter of USA Dance",
+    "authors": [
+        {
+            "name": "Eric Newbury",
+            "email": "enewbury94@icloud.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.0",
+        "slim/flash": "^0.1.0",
+        "monolog/monolog": "^1.13",
+        "league/oauth2-client": "^1.0",
+        "respect/validation": "^1.0",
+        "doctrine/orm": "^2.5",
+        "akrabat/rka-ip-address-middleware": "^0.4.0",
+        "ezyang/htmlpurifier": "^4.7",
+        "intervention/image": "^2.3",
+        "cocur/slugify": "^2.1",
+        "phpmailer/phpmailer": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {"EricNewbury\\DanceVT\\": "app/src/main"}
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.4.6"
+    },
+
+    "scripts": {
+        "test": "phpunit"
+    }
+}

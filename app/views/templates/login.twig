@@ -1,0 +1,19 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    <form id="login-form" class="account-form clear padding-15-horiz" method="post">
+
+        {% include "components/validation_box.twig" %}
+
+        <input type="text" name="email" autofocus placeholder="email" {% if status != "SUCCESS" %}value="{{ data.email }}"{% endif %}>
+        <input type="password" name="password" placeholder="password">
+        <hr>
+        <button type="submit" value="LOGIN" class="btn-primary">LOGIN</button>
+
+        <a class="margin-5-top float-right" href="/account/forgot-password">forgot password?</a>
+    </form>
+
+{% endblock %}

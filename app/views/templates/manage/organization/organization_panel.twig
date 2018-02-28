@@ -1,0 +1,59 @@
+{% extends 'manage/manage_base.twig' %}
+
+{% block title %}Organization Panel{% endblock %}
+{% block bodyClass %}{{ parent() }} background-grey{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    <section id="organizations" class="margin-30-top padding-15 site-width">
+        <h2>My Organizations</h2>
+        {% include 'components/validation_box.twig' %}
+        <div class="tile-container clear">
+            {# CREATE NEW #}
+            <form method="post" class="position-relative padding-15 center-text background-white tile medium-tile-short">
+                <i class="icon-plus icon-circle-big"></i>
+                <select class="width-100 margin-15-top" name="organizationId">
+                    <option value="-1">Select Organization</option>
+                    <option value="new">Create New Organization</option>
+                    {% for organization in allOrganizations %}
+                        <option value="{{ organization.getId() }}">{{ organization.getName() }}</option>
+                    {% endfor %}
+                </select>
+
+                <div class="hidden create-new">
+                    <input class="background-grey center-text" type="text" name="newOrganization" placeholder="Name">
+                </div>
+
+                <button type="submit" class="position-bottom position-left width-100 btn-primary">Request Organization</button>
+            </form>
+
+            {# ACTIVE ORGS #}
+            {% for organization in approvedOrganizations %}
+                <a href="{{ path_for('organizationPanelHome') }}/{{ organization.getId() }}/profile" title="{{ organization.getName() }}" class="background-white tile medium-tile-short" data-id="{{ organization.getId() }}">
+                    <div class="img-container clear" style="{% if organization.getImageLink() %}background-image: url('{{ organization.getImageLink() }}');{% endif %}"></div>
+                    <h3 class="center-text fade">{{ organization.getName() }}</h3>
+                    <div class="top-slider width-100 clear padding-12 center-text">
+                        <span style="margin-top:7px;" class="activate-switch activate-organization switch dark float-left {% if organization.isActive() %}on{% endif %}"></span>
+                        <span class="icon-logout big-icon remove-access" title="Remove Access"></span>
+                        <span class="icon-cancel float-right btn-third red delete-organization"></span>
+                    </div>
+                </a>
+            {% endfor %}
+
+            {# PENDING ORGS #}
+            {% for organization in pendingOrganizations %}
+                <div title="{{ organization.getName() }}" class="background-white tile medium-tile-short" data-id="{{ organization.getId() }}">
+                    <div class="img-container position-relative clear" style="{% if organization.getImageLink() %}background-image: url('{{ organization.getImageLink() }}');{% endif %}">
+                        <div class="icon-dot-3 pending-overlay"></div>
+                    </div>
+                    <h3 class="center-text fade">{{ organization.getName() }}</h3>
+                    <div class="top-slider width-100 clear padding-12 center-text">
+                        <span class="icon-logout big-icon remove-access" title="Remove Access"></span>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+{% endblock %}

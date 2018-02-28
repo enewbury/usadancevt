@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="email_style.css">
+{% for event in events %}
+    <div class="event-row">
+        <div class="event-img-container" style="float: left; margin-right: 15px; position:relative; height: 120px; overflow: hidden; width: 160px; background: #777 url('{{ domain }}{{ event.getThumbLink() }}') center; background-size: cover;">
+            <div class="date-overlay">
+                <div class="date-box">
+                    <span class="large">{{ event.getStartDatetime()|date('j') }}</span><br>
+                    <span>{{ event.getStartDatetime()|date('M') }}</span>
+                </div>
+                <div>{% if event.isAllDay() %}All Day{% else %}{{ event.getStartDatetime()|date('g:iA') }}{% endif %}</div>
+            </div>
+        </div>
+
+        <div class="event-text-portion">
+            <h3>{{ event.getName() }}</h3>
+            {% set hosts = event.getApprovedOrganizations() %}
+            {% set instructors = event.getApprovedInstructors() %}
+            <div class="small-section">
+                {% if hosts|length %}
+                    <small>hosted by {{ hosts|first.getName() }}{% if hosts|length > 1 %} (+ {{ hosts|length-1 }} more){% endif %}</small>{% if hosts|length and instructors|length %}<small>, </small>{% endif %}
+                {% endif %}
+
+                {% if instructors|length %}
+                    <small>taught by {{ instructors|first.getName() }}{% if instructors|length > 1 %} (+ {{ instructors|length-1 }} more){% endif %}</small>
+                {% endif %}
+            </div>
+            <div class="event-description">{{ event.getBlurb() }}</div>
+            <a href="{{ domain }}{{ path_for('event', {'eventId': event.getId(), 'date': event.getStartDatetime()|date('U')}) }}">Learn more</a>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+{% endfor %}

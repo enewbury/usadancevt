@@ -1,0 +1,59 @@
+{% extends 'manage/admin/admin_base.twig' %}
+
+{% block title %}Global Settings:: Admin Panel{% endblock %}
+
+{% block manageBody %}
+
+    <div id="global-settings" class="site-width">
+        <div class="padding-15"></div>
+        <form method="post" class="margin-15-horiz">
+            {% include 'components/validation_box.twig' %}
+            <div class="response-box"></div>
+
+            {# Site name and submit #}
+            <div class="clear row">
+                <div class="span-4 center-text float-right"><button class="btn-primary profile-submit" type="submit">Save Changes</button></div>
+            </div>
+
+            {# Nav List #}
+            <div class="sortable-select-container">
+                <label>Nav Links</label>
+                <select name="navItems[]" multiple="multiple" style="width:100%;" class="">
+
+                    {% for page in pages %}
+                        <option value="{{ page.getId() }}" {% if page.getNavItems()|length %}selected="selected"{% endif %}>{{ page.getName() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% for component in components %}
+                {% set type = component.getType() %}
+                {% set name = component.getName() %}
+                {% set slug = component.getSlug() %}
+                {% set val = component.getValue() %}
+
+                <div class="margin-15-top span-{{ component.getSpan() }}-gap">
+                    {% if type == 'text' %}
+                        <label class="margin-10-vert inline-block">{{ name }}</label>
+                        <input name="{{ slug }}" type="text" value="{{ val }}">
+                    {% elseif type == 'html' %}
+                        <label class="margin-10-vert inline-block">{{ name }}</label>
+                        <textarea class="editor" name="{{ slug }}">{{ val }}</textarea>
+                    {% elseif type == 'image' %}
+                        <div class="cover-photo-container background-white border photo-picker-box">
+                            <div class="padding-12 clear">
+                                <h4 class="float-left">{{ name }}</h4>
+                                <a class="change-image float-right padding-5" id="cover-photo-button">Change</a>
+
+                            </div>
+                            <div class="img-container height-300 width-100" style="{% if val != '' %}background-image: url('{{ val }}');{% endif %} {% if component.getSpan() < 12 %}background-size: auto{% endif %}">
+                                <input type="hidden" name="{{ slug }}" value="{{ val }}">
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </form>
+        <div class="padding-15-top clear-current"></div>
+    </div>
+{% endblock %}

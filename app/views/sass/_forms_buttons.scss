@@ -1,0 +1,367 @@
+
+
+.account-form {
+    max-width: 400px;
+    margin: 100px auto;
+    text-align: center;
+    button[type="submit"] {
+        width: 100%;
+    }
+
+}
+
+[type="text"], [type="password"] {
+
+    @include prefix((box-sizing: border-box), moz webkit o ms);
+    border: 0;
+    width: 100%;
+    padding: 12px;
+    background-color: #eee;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    outline: none;
+    font-size: 11pt;
+}
+[type="text"]:disabled{
+    color: #dcdcdc;
+}
+[type="text"]:focus, [type="password"]:focus{
+    outline: solid 1px lighten($primary-color, 25%);
+}
+
+.manage-body [type="text"]{
+    font-size:10pt;
+}
+
+.date-input{
+    background: url('img/cal-icon.png') no-repeat right 5px center;
+}
+.time-input{
+    background: url('img/time.png') no-repeat right 5px center;
+}
+.location-input{
+    background: url('img/location.png') no-repeat right 5px center;
+}
+.small-inputs [type="text"]{
+    color: #777;
+    padding:5px;
+    font-size: .8em;
+    width: 95px;
+    margin: 5px 3px;
+}
+
+.thin-input{
+    font-size:.8em;
+    padding: 5px;
+}
+
+.background-white input[type="text"].grey-bordered-input, .background-grey input[type="text"].grey-bordered-input, .background-dark-grey input[type="text"].grey-bordered-input{
+    background-color: #eee;
+    border: solid 1px #ddd;
+}
+h5.label{
+    margin-top: 5px;
+    vertical-align: middle;
+}
+
+label{
+    color: #777;
+    font-weight: 600;
+    text-transform:uppercase;
+}
+input.input-40 {
+    width: 38%;
+    margin-right: 2%;
+}
+button {
+    background-color: #b9b9b9;
+}
+.btn-third.btn-padding{
+    padding: 8px 12px;
+}
+
+input.input-60 {
+    width: 60%;
+}
+
+select{
+    display: block;
+    background-color: #eee;
+    border: solid 1px #ddd;
+    height: 30px;
+    outline:0;
+}
+
+.btn-primary {
+    background-color: $primary-color;
+    border: 0;
+    border-top: solid 5px darken($primary-color, 10%);
+    padding: 10px 15px 15px 15px;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    min-width: 100px;
+}
+
+.btn-primary:hover {
+    background-color: lighten($primary-color, 5%);
+    text-decoration:none;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: transparent;
+    font-size:12pt;
+    border:0;
+    border-radius: 4px;
+    color: $primary-color;
+    cursor: pointer;
+    outline: 0;
+}
+
+.btn-secondary.selected{
+    color: #aaa;
+}
+
+
+.btn-secondary:hover {
+    color: lighten($primary-color, 10%);
+    text-decoration:none;
+}
+.btn-secondary.clicked{
+    color: #777;
+}
+
+body .loading, body .loading-blue {
+    color: transparent;
+    position:relative;
+}
+body .loading:after {
+    content: url("img/loading.svg");
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include prefix((transform: translate(-50%, -50%)), moz webkit 0ms);
+
+}
+body .loading-blue:after{
+    content: url("img/loading_dark.svg");
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include prefix((transform: translate(-50%, -50%)), moz webkit 0ms);
+}
+
+.grey-bg form{
+    margin: 10px -15px;
+    padding: 10px;
+    background-color: #e4e4e4;
+    border-top: solid 1px #ccc;
+    border-bottom: solid 1px #ccc;
+    input{
+        background-color:white;
+        border: solid 1px #ccc;
+    }
+}
+
+.mce-container .hack-box{
+    padding:5px;
+}
+
+div.loading-bar{
+    background-color: #eee;
+    height:30px;
+}
+div.loading-bar-done{
+    @include prefix((box-sizing: border-box), moz webkit o ms);
+    text-align:center;
+    color:white;
+    padding:5px;
+    background-color: $primary-color;
+    height:100%;
+}
+.btn-third{
+    padding:2px 8px;
+    vertical-align:middle;
+    border-radius:3px;
+    color:white;
+    display:inline-block;
+    margin:2px 0;
+    cursor:pointer;
+    text-decoration:none;
+    border:0;
+}
+.btn-third.red{
+    background-color:#D35151;
+}
+.btn-third.red:hover{
+    text-decoration:none;
+    background-color:lighten(#D35151, 10%);
+}
+.btn-third.red.clicked{background-color:#ddd;}
+.btn-third.blue{
+    background-color:$primary-color;
+}
+.btn-third.blue:hover{
+    text-decoration: none;
+    background-color: lighten($primary-color, 10%);
+}
+.btn-third.blue.clicked{background-color:#ddd;}
+
+.switch{
+    display:inline-block;
+    width: 40px;
+    height:15px;
+    background-color: #ddd;
+    position:relative;
+    cursor:pointer;
+    border-radius:8px;
+}
+.switch.dark{
+    background-color: rgba(255,255,255,.6);
+}
+.switch:after{
+    @include prefix((box-sizing:border-box), webkit moz ms o);
+    @include prefix((transition: left 200ms), webkit moz ms o);
+    content:"";
+    display:block;
+    width:22px;
+    height:22px;
+    position:absolute;
+    top:-3px;
+    left:-5px;
+    border: solid 2px #fff;
+    border-radius:50%;
+    background-color: lighten(desaturate($primary-color, 35%),25%);
+}
+.switch.dark:after{
+    border-color:#3C3C3C;
+    background-color: darken(desaturate($primary-color, 35%),5%);
+}
+.switch.on:after{
+    background-color: $primary-color;
+    left: calc(100% - 10px);
+}
+.switch.dark.on:after{
+    background-color: darken($primary-color, 20%);
+}
+.form-horizontal{
+    @media (min-width: $break-size) {
+        input[type="text"], input[type="password"]{
+            max-width: 200px;
+            vertical-align: middle;
+            margin-left:5px;
+            margin-right:5px;
+        }
+    }
+    [type="submit"]{
+        float:right;
+        vertical-align: middle;
+    }
+}
+textarea{
+    font-family: inherit;
+    font-size: inherit;
+    padding:5px;
+    resize: none;
+    height: 100px;
+    width:100%;
+    border:solid 1px #ddd;
+    box-sizing: border-box;
+    outline:0;
+}
+textarea.editor{
+    background-color:#eee;
+}
+
+.little-circle, .dark-bg .little-circle{
+    font-size:12px;
+    padding: 1px;
+    border-radius:50%;
+    border: solid 1px #bbb;
+    cursor:pointer;
+    margin:2px;
+    text-align: center;
+    line-height: 21px;
+    vertical-align: middle;
+    width: 21px;
+    display: inline-block;
+}
+.little-circle.selected, .little-circle:hover{
+    background-color: rgba(255,255,255, .35);
+    border-color:transparent;
+    color:#3C3C3C;
+}
+
+.background-white .little-circle{
+    color: #999;
+    border-color:#999;
+}
+.background-white .little-circle.selected, .background-white .little-circle:hover{
+    background-color:#999;
+    color:white;
+}
+
+
+.new-item{
+    cursor:pointer;
+}
+
+select.hidden + .select2{
+    display: none;
+}
+select.margin-15-top + .select2{
+    margin-top:15px;
+}
+select.width-100 + .select2{
+    width:100% !important;
+    @include prefix((box-sizing: border-box), webkit ms moz o);
+}
+select + .select2-container--default .select2-selection{
+    border-color: #ddd;
+    background-color: #eee;
+    font-size: 12.5px;
+}
+
+select + .select2-container--default .select2-selection:focus{
+    outline: 0 !important;
+    border-color: lighten($primary-color, 10%);
+}
+
+.select2-search input:focus{
+    outline: 0 !important;
+    border-color: lighten($primary-color, 10%) !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple{
+    border-color: $primary-color !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    background-color: lighten($primary-color, 10%) !important;
+    border: 0 !important;
+    color: white !important;
+    padding: 5px 5px !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove{
+    color:inherit;
+    margin-right: 5px;
+}
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field{
+    padding: 5px 0;
+}
+.tooltipster-basic.tooltipster-base{
+    z-index: 5;
+}
+
+.label-form label + input, .label-form label + textarea{
+    margin-top: 2px;
+}
+input.profile-title:focus{
+    outline-width: 2px;
+}

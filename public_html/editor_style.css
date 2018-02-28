@@ -1,0 +1,9 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,700,400italic);
+body{
+    font-size:15px;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+img {
+    max-width: calc(100% - 16px);
+    margin: 8px 8px 0 8px;
+}

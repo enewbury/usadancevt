@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="email_style.css">
+{% for profile in profiles %}
+    <div class="email-profile" style="float: left; border: solid 1px #ddd; border-radius: 5px; width: {{ 100 / profiles|length - 6.5  }}%; margin: 0 3%;">
+        <div class="pad-profile center-text">
+            <div class="email-img-container" style="margin: 0 auto; border-radius: 50%; height: 120px; overflow: hidden; width: 120px; background: #777 url('{{ domain }}{{ profile.getThumbLink() }}') center; background-size: cover;"></div>
+            <h3>{{ profile.getName() }}</h3>
+            <div class="blurb">{{ profile.getBlurb()|raw }}</div>
+            {% if type == 'instructor' %}
+                {% set link = path_for(type, {'instructorId': profile.getId()}) %}
+            {% else %}
+                {% set link = path_for(type, {'organizationId': profile.getId()}) %}
+            {% endif %}
+            <a class="verify button" href="{{ domain }}{{ link }}">Read More</a>
+        </div>
+    </div>
+{% endfor %}

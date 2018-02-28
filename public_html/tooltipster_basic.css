@@ -1,0 +1,20 @@
+.tooltipster-basic {
+    border-radius: 5px;
+    border: 0;
+    color: #999;
+    background:rgba(53, 53, 53, 0.95);
+}
+
+.tooltipster-basic .tooltipster-content {
+    font-size: 14px;
+    line-height: 16px;
+    padding: 8px 10px
+}
+.tooltipster-basic .tooltipster-content select,.tooltipster-basic .tooltipster-content .select2-container--default .select2-selection--single{
+    background-color:#555;
+    border-color: #666;
+    color: #bbb;
+}
+.tooltipster-basic .tooltipster-content .select2-container--default .select2-selection--single .select2-selection__rendered{
+    color: #bbb;
+}

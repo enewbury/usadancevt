@@ -1,0 +1,61 @@
+<div class="tooltip-content permission-data dark-bg" data-admin="{% if user.isApprovedSiteAdmin() %}1{% endif %}" data-user-id="{{ user.getId() }}" data-association="{{ association }}" data-list-cached="true">
+    {% if association == 'ADMIN' %}
+        <div class="tooltipster-fill clear center-text">
+            <a class="update fill-btn no-underline {% if user.getSiteAdminPermission() == 'OFF' %}selected{% endif %}" data-status="OFF">Off</a><a class="update fill-btn no-underline {% if user.getSiteAdminPermission() == 'PENDING' %}selected{% endif %}" data-status="PENDING">Pending</a><a class="update fill-btn no-underline {% if user.getSiteAdminPermission() == 'APPROVED' %}selected{% endif %}" data-status="APPROVED">Approved</a>
+        </div>
+
+    {% elseif association == 'USER_MANAGES_INSTRUCTOR' %}
+
+
+        <h4 class="float-left margin-10-right">Instructor Admin Permissions</h4>
+        <span class="float-right margin-5 switch dark {% if user.isActiveInstructorAdmin() %}on{% endif %}"></span><br>
+        <table class="margin-15-top clear-current">
+            {% for instructorAssociation in user.getManagedInstructorAssociations() %}
+                <tr data-item-id="{{ instructorAssociation.getInstructor().getId() }}" class="clear border-0">
+                    <td><div class="img-container small position-relative" style="{% if instructorAssociation.getInstructor().getImageLink() %}background-image: url('{{ instructorAssociation.getInstructor().getImageLink() }}'){% endif %}">
+                            <div class="pending-overlay small icon-dot-3 {% if instructorAssociation.isApproved() %}hidden{% endif %}"></div>
+                        </div>
+                    </td>
+                    <td class="item-name">{{ instructorAssociation.getInstructor().getName() }}</td>
+                    <td class="right-text"><i title="approve" class="little-circle approve icon-check {% if instructorAssociation.isApproved() %}selected{% endif %}"></i>
+                    <i class="little-circle red delete icon-cancel"></i></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <select class="hidden margin-15-top width-100">
+            <option value="-1">Select Instructor</option>
+            {% for instructor in optionItems %}
+                <option value="{{ instructor.getId() }}">{{ instructor.getName() }}</option>
+            {% endfor %}
+        </select>
+        <span class="float-right add margin-15-top new-item"><i class="icon-plus"></i> add new</span>
+
+        <div class="padding-15-top center-text clear-current tooltipster-fill"><a class="btn-primary width-100 inline-block update">Update</a></div>
+
+
+    {% elseif  association == "USER_MANAGES_ORGANIZATION" %}
+        <h4 class="float-left margin-10-right">Organization Admin Permissions</h4>
+        <span class="float-right margin-5 switch dark {% if user.isActiveOrganizationAdmin() %}on{% endif %}"></span><br>
+        <table class="margin-15-top clear-current">
+        {% for organizationAssociation in user.getManagedOrganizationAssociations() %}
+            <tr data-item-id="{{ organizationAssociation.getOrganization().getId() }}" class="clear border-0">
+                <td><div class="img-container small" style="{% if organizationAssociation.getOrganization().getImageLink() %}background-image: url('{{ organizationAssociation.getOrganization().getImageLink() }}'){% endif %}"></div> </td>
+                <td class="item-name">{{ organizationAssociation.getOrganization().getName() }}</td>
+                <td class="right-text"><i title="approve" class="little-circle approve icon-check {% if organizationAssociation.isApproved() %}selected{% endif %}"></i>
+                <i class="little-circle delete icon-cancel"></i></td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <select class="hidden margin-15-top width-100">
+            <option value="-1">Select Organization</option>
+            {% for organization in optionItems %}
+                <option value="{{ organization.getId() }}">{{ organization.getName() }}</option>
+            {% endfor %}
+        </select>
+        <span class="float-right add margin-15-top new-item"><i class="icon-plus"></i> add new</span>
+
+        <div class="padding-15-top center-text clear-current tooltipster-fill"><a class="btn-primary width-100 inline-block update">Update</a></div>
+    {% endif %}
+</div>

@@ -1,0 +1,89 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+{% block ogTags %}
+    <meta property="og:image" content="{{ siteDomain }}{{ bannerImage }}" />
+{% endblock %}
+
+    {% block content %}
+    <section class="hero img-container position-relative" style="{% if bannerImage %}background-image: url('{{ bannerImage }}');{% endif %}">
+        <div class="site-width position-relative">
+            <div id="upcoming-events">
+                <h3 class="center-text">Upcoming Events</h3>
+                {% if upcomingEvents|length == 0 %}
+                    <div class="center-text padding-50 faded-red-color">No events to display yet</div>
+                {% endif %}
+                {% for event in upcomingEvents %}
+                    <a href="{{ path_for('event', {'eventId': event.getId()}) }}{% if event.isRepeating() %}/date/{{ event.getStartDatetime().getTimestamp() }}{% endif %}" class="small-event-entity">
+                        <div class="date-container float-left center-text vertical-center" style="background-color: {{ event.getCategory().getColor }}">
+                            <div>
+                                <span>{{ event.getStartDatetime()|date('M') }}</span>
+                                <span class="large">{{ event.getStartDatetime()|date('j') }}</span>
+                                <div>{% if event.isAllDay() %}All Day{% else %}{{ event.getStartDatetime()|date('g:iA') }}{% endif %}</div>
+                            </div>
+                        </div>
+                        <div class="text-portion padding-15-horiz">
+                            <b>{{ event.getName() }}</b>
+                            <p>{{ event.getBlurb() }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section class="background-grey" ><div id="mission-statement" class="center-box center-text padding-50" {{ missionStatement|raw }}</section>
+
+    {% if featuredDance %}
+    <section class="entity event-entity featured background-white clear">
+        <div class="top-col">
+            <div class="date-container float-left center-text vertical-center" style="background-color: {{ featuredDance.getCategory().getColor }}">
+                <div>
+                    {% if DateTool.isThisWeek(featuredDance.getStartDatetime()) %}
+                        <span class="large">{{ featuredDance.getStartDatetime()|date('D') }}</span>
+                    {% else %}
+                        <span>{{ featuredDance.getStartDatetime()|date('M') }}</span>
+                        <span class="large">{{ featuredDance.getStartDatetime()|date('j') }}</span>
+                    {% endif %}
+                    <div>{% if featuredDance.isAllDay() %}All Day{% else %}{{ featuredDance.getStartDatetime()|date('g:iA') }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="img-container float-left" style="{% if featuredDance.getImageLink() %}background-image: url('{{ featuredDance.getImageLink() }}');{% endif %}"></div>
+        </div>
+        <div class="bottom-col">
+            <div class="event-content">
+                <div class="text-portion padding-15-horiz position-relative">
+                    <h2>{{ featuredDance.getName() }}</h2>
+                    <p>{{ featuredDance.getBlurb() }}</p>
+                </div>
+                <a href="{{ path_for('event', {'eventId': featuredDance.getId()}) }}{% if featuredDance.isRepeating() %}/date/{{ featuredDance.getStartDatetime().getTimestamp() }}{% endif %}" class="btn-primary inline-block margin-15">Learn More</a>
+            </div>
+            <div class="associations-container">
+                {% set instructors = featuredDance.getApprovedInstructors() %}
+
+                {% if instructors|length %}
+                    <div class="center-text">
+                        <span class="small-profile-photo inline-block margin-15-top" style="{% if instructors|first.getImageLink() %}background-image: url('{{ instructors|first.getImageLink() }}');{% endif %}"></span>
+                        <br><b>{{ instructors|first.getName() }}</b>
+                    </div>
+                {% endif %}
+                {% if instructors|length > 1 %}
+                    <div class="center-text">
+                        <span class="small-profile-photo inline-block margin-15-top" style="{% if instructors[1].getImageLink() %}background-image: url('{{ instructors[1].getImageLink() }}');{% endif %}"></span>
+                        <br><b>{{ instructors[1].getName() }}</b>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </section>
+    {% endif %}
+
+    <section class="background-grey padding-50">
+        <div class="site-width big-ol clear">
+            <h1 class="margin-15-bottom center-text">{{ contentTitle }}</h1>
+            {{ contentSection|raw }}
+        </div>
+    </section>
+    
+{% endblock %}

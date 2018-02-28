@@ -1,0 +1,50 @@
+{% extends 'manage/admin/admin_base.twig' %}
+
+{% block manageBody %}
+    <div id="instructors">
+        <a id="new-inst-button" class="new-button" href="instructor/new"><i class="icon-plus"></i><b>New Instructor</b></a>
+        <h2 class="padding-15 margin-0">Instructors</h2>
+        <form class="filter-controls-horizontal padding-15 margin-15-top">
+
+            <input type="text" name="searchQuery" placeholder="Search" class="grey-bordered-input thin-input" value="{{ searchQuery }}">
+
+            <select name="organization">
+                <option value="-1">Teaches For</option>
+                {% for o in organizations %}
+                    <option {% if filteringOrganization and filteringOrganization.getId() == o.getId() %}selected {% endif %}value="{{ o.getId() }}">{{ o.getName() }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="category">
+                <option value="-1">Category</option>
+                {% for c in categories %}
+                    <option {% if filteringCategory and filteringCategory.getId() == c.getId() %}selected {% endif %}value="{{ c.getId() }}">{{ c.getValue() }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="county" class="">
+                <option value="-1">Location</option>
+                {% for c in counties %}
+                    <option {% if filteringCounty and filteringCounty == c %}selected {% endif %}value="{{ c }}">{{ c }}</option>
+                {% endfor %}
+            </select>
+            <button class="no-loading btn-third blue btn-padding margin-15-horiz" type="submit">Filter</button>
+            <button class="no-loading btn-third btn-padding" type="reset">Reset</button>
+        </form>
+
+        <div class="tile-container padding-15 clear">
+            {% for instructor in instructors %}
+                <a href="{{ path_for('adminPanelHome') }}/instructor/{{ instructor.getId() }}" class="tile background-white" data-id="{{ instructor.getId() }}">
+                    <div class="img-container clear" style="{% if instructor.getImageLink() %}background-image: url('{{ instructor.getImageLink() }}');{% endif %}"></div>
+                    <h3 class="center-text fade">{{ instructor.getName() }}</h3>
+                    <div class="top-slider width-100 clear padding-12 center-text">
+                        <span style="margin-top:7px;" class="activate-switch activate-instructor switch dark float-left {% if instructor.isActive() %}on{% endif %}"></span>
+                        <span class="icon-cancel float-right btn-third red delete-instructor"></span>
+                    </div>
+
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

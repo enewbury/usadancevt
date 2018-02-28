@@ -1,0 +1,119 @@
+<div id="events" class="site-width clear section-padding">
+    {% if manageMode %}
+    <a id="new-event-button" class="new-button" href="{{ baseUrl }}/new"><i class="icon-plus"></i><b>New Event</b></a>
+    {% endif %}
+
+    <div class="padding-15 clear">
+        <h2 class="margin-0 float-left">Events</h2>
+        <h2 class="light-text thin-text float-right margin-0"><b><a href="{{ baseUrl }}?{{ prevQuery }}"><i class="icon-right-open rotate-180"></i>Prev</a>&nbsp;&nbsp;<a href="{{ baseUrl }}?{{ nextQuery }}">Next<i class="icon-right-open"></i></a></b> {{ DateTool.getColloquialDate(start) }} - {{ DateTool.getColloquialDate(end) }}</h2>
+    </div>
+
+
+    <form class="filter-controls padding-15 span-3 float-right margin-30-top border-thick-left">
+        <label>Search</label><br>
+        <input type="text" name="searchQuery" class="thin-input grey-bordered-input" value="{{ searchQuery }}">
+
+        <label>Display Range</label><br>
+        <div class="small-inputs">
+            <input type="text" name="startRange" class="date-input grey-bordered-input" value="{{ start|date('m/d/Y') }}"><span class="light-text">to</span>
+            <input type="text" name="endRange" class="date-input grey-bordered-input" value="{{ end is empty ? "+1 week"|date('m/d/Y') : end|date('m/d/Y') }}">
+        </div>
+
+        {% if panelType != 'instructor' %}
+        <label>Instructors</label>
+        <select name="instructor" class="">
+            <option value="-1">All</option>
+            {% for i in instructors %}
+                <option {% if filteringInstructor and filteringInstructor.getid() == i.getId() %}selected {% endif %}value="{{ i.getId() }}">{{ i.getName() }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+
+        {% if panelType != 'organization' %}
+        <label>Hosts</label>
+        <select name="organization" class="">
+            <option value="-1">All</option>
+            {% for o in organizations %}
+                <option {% if filteringOrganization and filteringOrganization.getId() == o.getId() %}selected {% endif %}value="{{ o.getId() }}">{{ o.getName() }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+
+        <label>Category</label>
+        <select name="category" class="">
+            <option value="-1">All</option>
+            {% for c in categories %}
+                <option {% if filteringCategory and filteringCategory.getId() == c.getId() %}selected {% endif %}value="{{ c.getId() }}">{{ c.getValue() }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Location</label>
+        <select name="county" class="">
+            <option value="-1">All</option>
+            {% for c in counties %}
+                <option {% if filteringCounty and filteringCounty == c %}selected {% endif %}value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+        <button class="no-loading btn-third blue btn-padding margin-10-right" type="submit">Filter</button>
+        <button class="no-loading btn-third btn-padding" type="reset">Reset</button>
+    </form>
+
+    <div class="padding-15 clear span-9-gap">
+
+        {% for event in events %}
+            {# Display Header #}
+            {% set thisSection = DateTool.getListSection(event.getStartDatetime()) %}
+            {% if  currentSection != thisSection %}
+                {% set currentSection = thisSection %}
+                <h3>{{ currentSection }}</h3>
+            {% endif %}
+            <a href="{{ baseUrl }}/{{ event.getId() }}{% if event.isRepeating() %}/date/{{ event.getStartDatetime().getTimestamp() }}{% endif %}" class="entity event-entity background-white clear margin-15-bottom" data-id="{{ event.getId() }}">
+                <div class="top-col">
+                    <div class="date-container float-left center-text vertical-center" style="background-color: {{ event.getCategory().getColor }}">
+                        <div>
+                            {% if DateTool.isThisWeek(event.getStartDatetime()) %}
+                                <span class="large">{{ event.getStartDatetime()|date('D') }}</span>
+                            {% else %}
+                                <span>{{ event.getStartDatetime()|date('M') }}</span>
+                                <span class="large">{{ event.getStartDatetime()|date('j') }}</span>
+                            {% endif %}
+                            <div>{% if event.isAllDay() %}All Day{% else %}{{ event.getStartDatetime()|date('g:iA') }}{% endif %}</div>
+                        </div>
+                    </div>
+                    <div class="img-container float-left" style="{% if event.getThumbLink() %}background-image: url('{{ event.getThumbLink() }}');{% endif %}"></div>
+                </div>
+                <div class="text-portion padding-15-horiz position-relative">
+                    <h4>{{ event.getName() }}</h4>
+                    {% set hosts = event.getApprovedOrganizations(activeOnly) %}
+                    {% set instructors = event.getApprovedInstructors(activeOnly) %}
+                    <div class="small-section">
+                        {% if hosts|length %}
+                            <small>hosted by {{ hosts|first.getName() }}{% if hosts|length > 1 %} (+ {{ hosts|length-1 }} more){% endif %}</small>{% if hosts|length and instructors|length %}<small>, </small>{% endif %}
+                        {% endif %}
+
+                        {% if instructors|length %}
+                            <small>taught by {{ instructors|first.getName() }}{% if instructors|length > 1 %} (+ {{ instructors|length-1 }} more){% endif %}</small>
+                        {% endif %}
+                    </div>
+                    <p>{{ event.getBlurb() }}</p>
+                </div>
+                {% if manageMode %}
+                <div class="top-slider clear vertical-center padding-15-horiz">
+                    <div>
+                        <span class="activate-switch activate-event switch dark {% if event.isActive() %}on{% endif %}"></span>
+                        <span class="margin-15-top icon-cancel btn-third red delete-event"></span>
+                    </div>
+                </div>
+                {% endif %}
+            </a>
+        {% endfor %}
+
+        {% if events is empty %}
+            <h3 class="center-text">No Events To Show</h3>
+        {% else %}
+            <div class="center-text clear-current margin-15-top">
+                <h2><b><a href="{{ baseUrl }}?{{ prevQuery }}"><i class="icon-right-open rotate-180"></i>Prev</a>&nbsp;&nbsp;<a href="{{ baseUrl }}?{{ nextQuery }}">Next<i class="icon-right-open"></i></a></b></h2>
+            </div>
+        {% endif %}
+    </div>
+</div>

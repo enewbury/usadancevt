@@ -1,0 +1,7 @@
+{% extends 'manage/instructor/instructor_base.twig' %}
+
+{% block manageBody %}
+    {% set panelType = 'instructor' %}
+    {% set baseUrl = path_for(panelType~'EventList', {'id': instructor.getId()}) %}
+    {% include 'components/event_list.twig'%}
+{% endblock %}

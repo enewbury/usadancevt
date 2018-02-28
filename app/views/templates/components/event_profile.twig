@@ -1,0 +1,214 @@
+
+<div id="event-profile" class="site-width">
+    <div class="padding-15"></div>
+    <form method="post" class="margin-15-horiz" id="edit-event-form">
+        <input type="hidden" id="repeat-selection-input" name="repeatSelection">
+        {% include 'components/validation_box.twig' %}
+        {% set admin = user.isApprovedSiteAdmin() %}
+        <div class="response-box"></div>
+
+        <div class="clear row">
+            <input class="span-8-gap profile-title" type="text" placeholder="Name" name="name" value="{{ event.getName() }}">
+            <div class="span-4 center-text"><button class="btn-primary profile-submit" type="submit">Save Changes</button></div>
+        </div>
+
+        <section class="span-8-gap break-1000">
+            {# event photo container #}
+            <div class="cover-photo-container background-white border photo-picker-box margin-15-bottom">
+                <div class="padding-12 clear">
+                    <h4 class="float-left">EVENT PHOTO</h4>
+                    <a class="change-image float-right padding-5" id="event-photo-button">Change</a>
+
+                </div>
+                <div class="img-container height-300 width-100" style="{% if event.getImageLink() %}{% if event.getImageLink() %}background-image: url('{{ event.getImageLink() }}'){% endif %};{% endif %}">
+                    <input type="hidden" name="imageLink" value="{{ event.getImageLink() }}">
+                    <input class="thumb" type="hidden" name="thumbLink" value="{{ event.getThumbLink() }}">
+                </div>
+            </div>
+
+            <h4>Short Excerpt</h4>
+            <textarea class="margin-15-bottom" name="blurb">{{ event.getBlurb() }}</textarea>
+
+            {# DESCRIPTION #}
+            <h4>Description</h4>
+            <textarea class="editor" name="description">{{ event.getDescription() }}</textarea>
+
+        </section>
+
+        <section class="span-4 break-1000">
+            <div class="background-white border padding-12 clear light-text margin-15-bottom">
+                <h4>Event Settings</h4>
+
+                <div class="clear">
+                    <h5 class="span-3-gap right-text label small-margin no-break">Active:</h5>
+                    <div class="span-9 small-margin no-break">
+                        <label for="active-input" class="switch margin-12 {% if event.isActive() %}on{% endif %}"></label>
+                        <input id="active-input" class="hidden" {% if event.isActive() %}checked{% endif %} type="checkbox" name="active">
+                    </div>
+                </div>
+                {% if admin %}
+                <div class="clear">
+                    <h5 class="span-3-gap right-text label small-margin no-break">Signature Event:</h5>
+                    <div class="span-9 small-margin no-break">
+                        <label for="signature-event-input" class="switch margin-12 {% if event.isSignatureEvent() %}on{% endif %}"></label>
+                        <input id="signature-event-input" class="hidden" {% if event.isSignatureEvent() %}checked{% endif %} type="checkbox" name="signatureEvent">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            {# times #}
+            <div class="background-white border padding-12 clear small-inputs light-text margin-15-bottom">
+                <h4>Date & Time</h4>
+                <div id="date-time-box" class="clear">
+                    <div class="clear">
+                        <h5 class="span-3-gap right-text label small-margin no-break">Starts:</h5>
+                        <div class="span-9 small-margin no-break">
+                            <input type="text" class="date-input" name="startDate" value="{{ event.getStartDatetime()|date("m/d/Y")}}">
+                        <span class="time-input-section {% if event.isAllDay() %}hidden{% endif %}">
+                            <span> at </span>
+                            <input type="text" class="time-input" name="startTime" value="{{ event.getStartDatetime()|date("h:iA")}}">
+                        </span>
+                        </div>
+                    </div>
+                    <div class="clear">
+                        <h5 class="span-3-gap right-text label no-break small-margin">Ends:</h5>
+                        <div class="span-9 no-break small-margin">
+                            <input type="text" class="icon-calendar date-input" name="endDate" value="{{ event.getEndDatetime() is empty ? '' : event.getEndDatetime()|date("m/d/Y")}}">
+                        <span class="time-input-section {% if event.isAllDay() %}hidden{% endif %}">
+                            <span> at </span>
+                            <input type="text" class="time-input" name="endTime" value="{{ event.getEndDatetime() is empty ? '' : event.getEndDatetime()|date("h:iA")}}">
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clear">
+                    <h5 class="span-3-gap right-text label no-break small-margin">All Day:</h5>
+                    <div class="span-9 no-break small-margin">
+                        <label for="all-day-input" class="switch margin-12 {% if event.isAllDay() %}on{% endif %}"></label>
+                        <input id="all-day-input" class="hidden" {% if event.isAllDay() %}checked{% endif %} type="checkbox" name="allDay">
+                    </div>
+                </div>
+                <div class="clear">
+                    <h5 class="span-3-gap right-text label no-break small-margin">Repeating:</h5>
+                    <div class="span-9 no-break small-margin">
+                        <label for="repeating-input" class="switch margin-12 {% if event.isRepeating() %}on{% endif %}"></label>
+                        <input id="repeating-input" class="hidden" {% if event.isRepeating() %}checked{% endif %} type="checkbox" name="repeating">
+                    </div>
+                </div>
+                <div id="repeating-box" class="clear-current clear {% if not event.isRepeating() %}hidden{% endif %}">
+                    <div class="clear">
+                        <h5 class="span-3-gap right-text label no-break small-margin">Days:</h5>
+                        <div class="span-9 no-break small-margin margin-5-top center-text">
+                            <span class="little-circle {% if 0 in event.repeatDays() %}selected{% endif %}" data-day="0">Su</span>
+                            <span class="little-circle {% if 1 in event.repeatDays() %}selected{% endif %}" data-day="1">M</span>
+                            <span class="little-circle {% if 2 in event.repeatDays() %}selected{% endif %}" data-day="2">Tu</span>
+                            <span class="little-circle {% if 3 in event.repeatDays() %}selected{% endif %}" data-day="3">W</span>
+                            <span class="little-circle {% if 4 in event.repeatDays() %}selected{% endif %}" data-day="4">Th</span>
+                            <span class="little-circle {% if 5 in event.repeatDays() %}selected{% endif %}" data-day="5">F</span>
+                            <span class="little-circle {% if 6 in event.repeatDays() %}selected{% endif %}" data-day="6">Sa</span>
+                            <input type="hidden" name="repeatDays" value="{{ event.repeatDays() }}">
+                        </div>
+                    </div>
+
+                    <div class="clear">
+                        <h5 class="span-3-gap right-text label no-break small-margin">Until:</h5>
+                        <div class="span-9 small-margin no-break">
+                            <input type="text" class="date-input" name="repeatUntil" value="{{ event.getRepeatUntil() is empty ? '' : event.getRepeatUntil()|date("m/d/Y")}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Info #}
+            <div class="background-white padding-15 border margin-15-bottom">
+                <div class="padding-5">
+                    <h4 class="border-bottom">Location</h4>
+                    <input id="google-autocomplete" class="location-input" type="text" name="location" value="{{ event.getLocation() }}" onkeydown="if($('.pac-container').is(':visible') && event.keyCode == 13) {event.preventDefault();}">
+                    <input id="coordinates" type="hidden" name="coordinates" value="{{ event.getCoordinates() }}">
+                    <input id="county" type="hidden" name="county" value="{{ event.getCounty() }}">
+                </div>
+
+                <div class="padding-5">
+                    <h4 class="">Category</h4>
+                    <select name="categoryId" class="width-100 margin-5-top">
+                        {% for category in categories %}
+                            <option value="{{ category.getId() }}" {% if event.getCategory().getId() == category.getId() %}selected{% endif %}>{{ category.getValue() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="padding-5">
+                    <h4 class="border-bottom">Facebook Event</h4>
+                    <input type="text" name="facebook" placeholder="Paste URL Here" value="{{ event.getFacebook() }}">
+                </div>
+            </div>
+
+
+
+            {# Instructors #}
+            <div class="margin-15-bottom background-white padding-12 clear border permission-data instructor-permissions" data-admin="{{ admin }}" data-id="{{ event.getId() }}" data-association="INSTRUCTOR_TEACHES_EVENT">
+                <h4 class="">Instructors</h4>
+                <table class="margin-15-top clear-current {% if not user.isApprovedSiteAdmin() %}not-admin{% endif %}">
+                    {% for instructorAssociation in event.getInstructorAssociations() %}
+                        {% set managedItem = instructorAssociation.isApproved() %}
+                        <tr data-managed="{{ managedItem }}" data-item-id="{{ instructorAssociation.getInstructor().getId() }}" data-link="{{ instructorAssociation.getInstructor().getImageLink }}" data-name="{{ instructorAssociation.getInstructor().getName() }}" class="clear border-0">
+                            <td>
+                                <div class="img-container small position-relative" style="{% if instructorAssociation.getInstructor().getImageLink() %}background-image: url('{{ instructorAssociation.getInstructor().getImageLink() }}'){% endif %}">
+                                    <div class="small pending-overlay icon-dot-3 {% if instructorAssociation.isApproved() %}hidden{% endif %}"></div>
+                                </div>
+                            </td>
+                            <td class="item-name">{{ instructorAssociation.getInstructor().getName() }}</td>
+                            <td style="width:66px;" class="right-text"><i title="approve" class="little-circle approve icon-check {% if instructorAssociation.isApproved() %}selected{% endif %}"></i>
+                                <i class="little-circle delete icon-cancel"></i></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <select class="hidden margin-15-top width-100">
+                    <option value="-1">Select Instructor</option>
+                    {% if not admin %}
+                        <optgroup data-managed="true" label="Managed by Me"></optgroup>
+                        <optgroup label="Other"></optgroup>
+                    {% endif %}
+                </select>
+                <span class="btn-secondary margin-15-top float-right add  new-item"><i class=" icon-plus"></i> add new</span>
+                <input type="hidden" value="" class="association-input" name="instructorRequest">
+            </div>
+
+            {# hosts #}
+
+            <div class="margin-15-bottom background-white padding-12 clear border permission-data organization-permissions" data-admin="{{ admin }}" data-id="{{ event.getId() }}" data-association="ORGANIZATION_HOSTS_EVENT">
+                <h4 class="">Host Organizations</h4>
+                <table class="margin-15-top clear-current {% if not admin %}not-admin{% endif %}">
+                    {% for organizationAssociation in event.getOrganizationAssociations() %}
+                        {% set managedItem = organizationAssociation.isApproved() %}
+                        <tr data-managed="{{ managedItem }}" data-item-id="{{ organizationAssociation.getOrganization().getId() }}" data-link="{{ organizationAssociation.getOrganization().getImageLink }}" data-name="{{ organizationAssociation.getOrganization().getName() }}" class="clear border-0">
+                            <td><div class="img-container small position-relative" style="{% if organizationAssociation.getOrganization().getImageLink() %}background-image: url('{{ organizationAssociation.getOrganization().getImageLink() }}'){% endif %}">
+                                    <div class="small pending-overlay icon-dot-3 {% if organizationAssociation.isApproved() %}hidden{% endif %}"></div>
+                                </div> </td>
+                            <td class="item-name">{{ organizationAssociation.getOrganization().getName() }}</td>
+                            <td style="width:66px;" class="right-text">
+                                <i title="approve" class="little-circle approve icon-check {% if organizationAssociation.isApproved() %}selected{% endif %}"></i>
+                                <i class="little-circle delete icon-cancel"></i></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <select class="hidden margin-15-top width-100">
+                    <option value="-1">Select Organization</option>
+                    {% if not user.isApprovedSiteAdmin() %}
+                        <optgroup data-managed="true" label="Managed by Me"></optgroup>
+                        <optgroup label="Other"></optgroup>
+                    {% endif %}
+                </select>
+                <span class="btn-secondary margin-15-top float-right add  new-item"><i class=" icon-plus"></i> add new</span>
+                <input type="hidden" value="" class="association-input" name="hostRequest">
+            </div>
+        </section>
+    </form>
+    <div class="padding-15-top clear-current"></div>
+</div>
+
+{% include "components/autocomplete.twig" %}

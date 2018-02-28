@@ -1,0 +1,5 @@
+<ul id="main-nav">
+    {% for navItem in navItems %}
+        <li><a href="{{ navItem.linkHref }}">{{ navItem.linkText|upper }}</a></li>
+    {% endfor %}
+</ul>

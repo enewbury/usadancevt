@@ -1,0 +1,18 @@
+{% extends 'manage/manage_base.twig' %}
+{% block title %}Instructor Panel{% endblock %}
+
+{% block content %}
+    <div class="fixed-head-pad"></div>
+    <nav id="profile-nav">
+        <ul>
+            <li><a href="/instructor-panel/all"><i class="icon-layout"></i>All Instructors</a></li>
+            <li><a href="/instructor-panel/{{ instructor.getId() }}/profile"><i class="icon-user"></i>Profile</a></li>
+            <li><a href="/instructor-panel/{{ instructor.getId() }}/event"><i class="icon-calendar"></i>Events</a></li>
+        </ul>
+    </nav>
+    <section data-current-instructor-id="{{ instructor.getId() }}">
+        {% block manageBody %}{% endblock %}
+    </section>
+
+
+{% endblock %}

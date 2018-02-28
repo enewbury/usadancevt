@@ -1,0 +1,16 @@
+{% extends 'components/base.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+
+{% block content %}
+    {% if bannerImage %}
+        <section class="banner-image img-container" style="background-image:url('{{ bannerImage }}');"></section>
+    {% else %}
+        <div class="fixed-head-pad"></div>
+    {% endif %}
+    <section class="site-width section-padding clear">
+        {% if introduction %}<div class="padding-15">{{ introduction|raw }}</div>{% endif %}
+        <div class="span-7-gap padding-15">{{ leftColumn|raw }}</div>
+        <div class="span-5 padding-15">{{ rightColumn|raw }}</div>
+    </section>
+{% endblock %}

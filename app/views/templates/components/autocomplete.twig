@@ -1,0 +1,38 @@
+<script>
+    function getCountyAndState(addrComps){
+        var county, state, countyState;
+        for(var i = 0; i<addrComps.length; i++){
+            if(addrComps[i].types.indexOf('administrative_area_level_2') != -1){
+                county = addrComps[i].long_name;
+            }
+            else if (addrComps[i].types.indexOf('administrative_area_level_1') != -1){
+                state = addrComps[i].short_name;
+            }
+        }
+        countyState = (county && state) ? county+ ', '+state : null;
+        return countyState;
+    }
+    //google autocmoplete
+    function initAutoComplete(){
+        var autocomplete = new google.maps.places.Autocomplete(document.getElementById('google-autocomplete'));
+        autocomplete.addListener('place_changed', function(){
+            document.getElementById('coordinates').value = JSON.stringify(autocomplete.getPlace().geometry.location);
+
+            var addrComps = autocomplete.getPlace().address_components;
+            var countyState = getCountyAndState(addrComps);
+            //couldn't find country from autocomplete details.  Lookup via place Id
+            if(!countyState) {
+                var geocoder = new google.maps.Geocoder;
+                geocoder.geocode({'placeId': autocomplete.getPlace().place_id}, function(results, status){
+                    if (status === google.maps.GeocoderStatus.OK && results[0]) {
+                        countyState = getCountyAndState(results[0].address_components);
+                        document.getElementById('county').value = countyState;
+                    }
+                });
+            }
+            document.getElementById('county').value = countyState;
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByPL8LN6zPXO1IK2tdVrglnNOx5jBvc-4&libraries=places&callback=initAutoComplete"></script>
+

@@ -1,0 +1,28 @@
+{#Errors#}
+{% if status and status != "success" %}
+    <div class="error-box margin-15-top">
+
+        {% if data.message %}
+            <p>{{ data.message }}</p>
+            {% if data.linkText %}
+                <a href="{{ data.linkHref }}">{{ data.linkText }}</a>
+            {% endif %}
+        {% endif %}
+
+        {% if data.messages %}
+            <ul>
+                {% for msg in data.messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if errorMessage %}
+            <p>{{ errorMessage }}</p>
+        {% endif %}
+    </div>
+{% elseif status and data.message %}
+    <div class="success-box margin-15-top">
+        {{ data.message }}
+    </div>
+{% endif %}

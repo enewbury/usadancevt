@@ -1,0 +1,137 @@
+
+    <div id="instructor-profile" class="site-width">
+        <div class="padding-15"></div>
+        <form method="post" class="margin-15-horiz clear">
+            {% include 'components/validation_box.twig' %}
+            <div class="response-box"></div>
+
+            <div class="clear row">
+                <input class="span-8-gap profile-title" type="text" placeholder="Name" name="name" value="{{ instructor.getName() }}">
+                <div class="span-4 center-text"><button class="btn-primary profile-submit" type="submit">Save Changes</button></div>
+            </div>
+
+
+            {# Profile Container #}
+            <div class="background-white span-4-gap border photo-picker-box break-1000">
+                <div class="padding-12 clear">
+                    <h4 class="float-left">PROFILE PHOTO</h4>
+                    <a class="float-right btn-secondary change-image padding-5" id="change-profile-button">Change</a>
+
+                </div>
+                <div class="height-300">
+                    <div class="img-container round-220 center-relative" style="{% if instructor.getImageLink() %}{% if instructor.getImageLink() %}background-image: url('{{ instructor.getImageLink() }}'){% endif %};{% endif %}">
+                        <input class="full" type="hidden" name="imageLink" value="{{ instructor.getImageLink() }}">
+                        <input class="thumb" type="hidden" name="thumbLink" value="{{ instructor.getThumbLink() }}">
+                    </div>
+                </div>
+
+            </div>
+
+            {# cover photo container #}
+            <div class="cover-photo-container span-8 background-white border photo-picker-box break-1000">
+                <div class="padding-12 clear">
+                    <h4 class="float-left">COVER PHOTO</h4>
+                    <a class="change-image float-right padding-5" id="cover-photo-button">Change</a>
+
+                </div>
+                <div class="img-container height-300 width-100" style="{% if instructor.getCoverPhoto() %}background-image: url('{{ instructor.getCoverPhoto() }}'){% endif %};">
+                    <input type="hidden" name="coverPhoto" value="{{ instructor.getCoverPhoto() }}">
+                </div>
+            </div>
+
+
+            <div class="margin-15-top clear-current">
+                <div class="span-8-gap break-1000">
+                    <textarea class="editor" name="description">{{ instructor.getDescription() }}</textarea>
+                </div>
+
+                {# Active Box #}
+                <div class="background-white padding-12 span-4 float-right border break-1000">
+                    <h4>Settings</h4>
+
+                    <div class="clear">
+                        <h5 class="span-3-gap right-text label small-margin no-break">Active:</h5>
+                        <div class="span-9 small-margin no-break">
+                            <label for="active-input" class="switch margin-12 {% if instructor.isActive() %}on{% endif %}"></label>
+                            <input id="active-input" class="hidden" {% if instructor.isActive() %}checked{% endif %} type="checkbox" name="active">
+                        </div>
+                    </div>
+                </div>
+
+                {# Relationships #}
+                {% set admin = user.isApprovedSiteAdmin() %}
+                <div class="background-white padding-12 span-4 float-right clear border break-1000 permission-data" data-admin="{{ admin }}" data-id="{{ instructor.getId() }}" data-association="INSTRUCTOR_TEACHES_FOR_ORGANIZATION">
+                    <h4 class="">Organizations</h4>
+                    <table class="margin-15-top clear-current {% if not user.isApprovedSiteAdmin() %}not-admin{% endif %}">
+                        {% for organizationAssociation in instructor.getOrganizationAssociations() %}
+                            {% set managedItem = organizationAssociation.isApproved() %}
+                            <tr data-managed="{{ managedItem }}" data-item-id="{{ organizationAssociation.getOrganization().getId() }}" data-link="{{ organizationAssociation.getOrganization().getImageLink }}" data-name="{{ organizationAssociation.getOrganization().getName() }}" class="clear border-0">
+                                <td><div class="img-container small position-relative" style="{% if organizationAssociation.getOrganization().getImageLink() %}background-image: url('{{ organizationAssociation.getOrganization().getImageLink() }}'){% endif %}">
+                                        <div class="small pending-overlay icon-dot-3 {% if organizationAssociation.isApproved() %}hidden{% endif %}"></div>
+                                    </div> </td>
+                                <td class="item-name">{{ organizationAssociation.getOrganization().getName() }}</td>
+                                <td style="width:66px;" class="right-text"><i title="approve" class="little-circle approve icon-check {% if organizationAssociation.isApproved() %}selected{% endif %}"></i>
+                                    <i class="little-circle delete icon-cancel"></i></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    <select class="hidden margin-15-top width-100">
+                        <option value="-1">Select Organization</option>
+                        {% if not admin %}
+                            <optgroup data-managed="true" label="Managed by Me"></optgroup>
+                            <optgroup label="Other"></optgroup>
+                        {% endif %}
+                    </select>
+                    <span class="btn-secondary margin-15-top float-right add  new-item"><i class=" icon-plus"></i> add new</span>
+                    <input type="hidden" value="" class="association-input" name="request">
+                </div>
+
+                {# Info #}
+                <div class="background-white padding-12 span-4 float-right border break-1000">
+                    <div class="padding-5">
+                        <h4 class="">Location</h4>
+                        <input id="google-autocomplete" class="location-input" type="text" name="location" value="{{ instructor.getLocation() }}">
+                        <input id="coordinates" type="hidden" name="coordinates" value="{{ instructor.getCoordinates() }}">
+                        <input id="county" type="hidden" name="county" value="{{ instructor.getCounty() }}">
+                    </div>
+
+                    <div class="padding-5">
+                        <h4 class="">Category</h4>
+                        <select name="categoryId" class="width-100 margin-5-top">
+                            {% for category in categories %}
+                                <option value="{{ category.getId() }}" {% if instructor.getCategory().getId() == category.getId() %}selected{% endif %}>{{ category.getValue() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="padding-5">
+                        <h4 class="border-bottom">Email</h4>
+                        <input type="text" name="email" value="{{ instructor.getEmail() }}">
+                    </div>
+
+                    <div class="padding-5">
+                        <h4 class="border-bottom">Phone</h4>
+                        <input class="phone-input" type="text" name="phone" value="{{ instructor.getPhone() }}">
+                    </div>
+
+                    <div class="padding-5">
+                        <h4 class="border-bottom">Website</h4>
+                        <input type="text" name="website" value="{{ instructor.getWebsite() }}">
+                    </div>
+
+                    <div class="padding-5">
+                        <h4 class="border-bottom">Facebook</h4>
+                        <input type="text" name="facebook" value="{{ instructor.getFacebook() }}">
+                    </div>
+
+                    <div class="padding-5">
+                        <h4 class="border-bottom">Twitter</h4>
+                        <input type="text" name="twitter" value="{{ instructor.getTwitter() }}">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="padding-15-top clear-current"></div>
+    </div>
+    {% include "components/autocomplete.twig" %}

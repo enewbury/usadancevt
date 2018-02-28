@@ -1,0 +1,96 @@
+{% extends 'manage/admin/admin_base.twig' %}
+
+{% block title %}Email Tool:: Admin Panel{% endblock %}
+
+{% block manageBody %}
+
+<form id="email-tool" class="site-width padding-15" method="post">
+    {% include 'components/validation_box.twig' %}
+    <input type="hidden" name="sections">
+    <h2 class="padding-15-top">Create New Email</h2>
+
+    <div class="clear row padding-15-top">
+        <input class="span-8-gap profile-title" type="text" placeholder="Subject" name="subject">
+        <div class="span-4 center-text"><button class="btn-primary profile-submit" type="submit">Send Email</button></div>
+    </div>
+
+    <div class="email-content width-100">
+        <div class="email-section" data-type="html">
+            <div class="span-3-gap"><h3>Content Area</h3></div>
+            <div class="span-9 right-text"><span class="new-below btn-third blue btn-padding">+ Insert Below</span></div>
+            <div class="clear-current">
+                <textarea class="editor" data-absolute-urls="true"></textarea>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script id="organizations" type="application/json">{{ jsonOrganizations|raw }}</script>
+<script id="instructors" type="application/json">{{ jsonInstructors|raw }}</script>
+<script id="categories" type="application/json">{{ jsonCategories|raw }}</script>
+<script id="counties" type="application/json">{{ jsonCounties|raw }}</script>
+
+<script id="contentAreaHtml" type="text/html">
+    <div class="span-3-gap"><h3>Content Area</h3></div>
+    <div class="span-9 right-text"><span class="btn-padding icon-cancel btn-third red delete-email-section margin-10-right">Delete</span><span class="new-below btn-third blue btn-padding">+ Insert Below</span></div>
+    <div class="clear-current"><textarea data-absolute-urls="true"></textarea></div>
+</script>
+
+<script id="instructorProfileHtml" type="text/html">
+    <div class="span-3-gap"><h3>Instructor Profile</h3></div>
+    <div class="span-5">
+        <select class="profile-select" style="width: 100%" multiple></select>
+    </div>
+    <div class="span-4 right-text"><span class="btn-padding icon-cancel btn-third red delete-email-section margin-10-right">Delete</span><span class="new-below btn-third blue btn-padding">+ Insert Below</span></div>
+    <div class="profile-area clear-current clear"></div>
+</script>
+
+<script id="organizationProfileHtml" type="text/html">
+    <div class="span-3-gap"><h3>Organization Profile</h3></div>
+    <div class="span-5">
+        <select class="profile-select" style="width: 100%" multiple></select>
+    </div>
+    <div class="span-4 right-text"><span class="btn-padding icon-cancel btn-third red delete-email-section margin-10-right">Delete</span><span class="new-below btn-third blue btn-padding">+ Insert Below</span></div>
+    <div class="profile-area clear-current clear"></div>
+</script>
+
+<script id="eventListHtml" type="text/html">
+    <div class="span-3-gap"><h3>Event List</h3></div>
+    <div class="span-9 right-text"><span class="btn-padding icon-cancel btn-third red delete-email-section margin-10-right">Delete</span><span class="new-below btn-third blue btn-padding">+ Insert Below</span></div>
+    <div class="clear-current">
+        <div class="filter-controls-horizontal padding-15 margin-15-top clear">
+            <div class="span-9">
+            <input type="text" name="searchQuery" placeholder="Search" class="grey-bordered-input thin-input">
+
+            <div class="small-inputs inline-block">
+                <input type="text" name="startRange" class="date-input grey-bordered-input" value="{{ start|date('m/d/Y') }}"><span class="light-text"> to </span>
+                <input type="text" name="endRange" class="date-input grey-bordered-input" value="{{ end is empty ? "+1 week"|date('m/d/Y') : end|date('m/d/Y') }}">
+            </div>
+
+
+            <select name="instructor" class="">
+                <option value="-1">Taught By</option>
+            </select>
+
+            <select name="organization">
+                <option value="-1">Hosted By</option>
+            </select>
+
+            <select name="category">
+                <option value="-1">Category</option>
+            </select>
+
+            <select name="county">
+                <option value="-1">Location</option>
+            </select>
+
+            </div>
+            <div class="span-3 right-text">
+            <button class="btn-third blue btn-padding load-events">Load Events</button>
+            </div>
+        </div>
+    </div>
+    <div class="list-area"></div>
+</script>
+{% endblock %}

@@ -1,0 +1,28 @@
+<div id="requests-list">
+    <div class="scrollable">
+        {% if requests is empty %}
+        <h3 class="center-text">No Requests</h3>
+        {% endif %}
+
+        <div class="mobile-only padding-12 background-grey clear">
+            <h4 class="float-left">Requests</h4><button class="btn-secondary float-right close-requests">Close</button>
+        </div>
+    <table>
+        {% for request in requests %}
+            <tr data-request-id="{{ request.id }}" class="{% if request.completed %}disabled{% endif %}">
+                <td class="center-text"><span>{{ request.date|date("M") }}</span> <b>{{ request.date|date("j") }}</b></td>
+                <td>{{ request.message }}</td>
+                <td class="center-text">
+                    {% if request.completed == 'APPROVED' %}
+                        <i class="icon-check center-text bigger"></i>
+                    {% elseif request.completed == 'DENIED' %}
+                        <i class="icon-cancel center-text bigger"></i>
+                    {% else %}
+                        <i class="icon-check little-circle approve inline-block"></i><i class="icon-cancel little-circle deny inline-block"></i>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+</div>

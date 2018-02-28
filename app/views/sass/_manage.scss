@@ -1,0 +1,247 @@
+#manage-nav{
+    @media (min-width: $break-size){
+        float:left;
+        width: 230px;
+        height: 100%;
+    }
+    ul{ padding:15px 0; margin:0;}
+    li{
+        list-style-type: none;
+        margin:0;
+        a{
+            color:#777;
+            display:block;
+            margin: 11px 2px;
+            padding: 10px 15px;
+            border-left: solid 3px transparent;
+            font-weight: 600;
+            font-size:1.05em;
+        }
+        a:hover,.selected{
+            text-decoration: none;
+            color: darken($secondary-color, 10%);
+            font-weight:700;
+            border-color: $primary-color;
+        }
+    }
+    i{
+        margin-right:8px;
+    }
+}
+#profile-nav{
+    background-color:white;
+    text-align:center;
+    ul{
+        margin:0;
+    }
+    li{
+        display:inline-block;
+        a{
+            display: inline-block;
+            position:relative;
+            padding: 20px 15px;
+            color: #999;
+            outline:0;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        a.selected:before{
+            content:"";
+            display: block;
+            position: absolute;
+            bottom:0;
+            left:50%;
+            @include prefix((transform:translateX(-50%)),webkit ms moz o);
+            border-style: solid;
+            border-width: 0 8px 8px 8px;
+            border-color: transparent transparent #e5e5e5 transparent;
+
+        }
+    }
+}
+#manage-body{
+    position:relative;
+    @include prefix((box-sizing: border-box), webkit ms o moz);
+    @media (min-width: $break-size){
+        margin-left: 230px;
+        overflow:auto;
+        height:100%;
+    }
+}
+
+table{
+    width:100%;
+    border-collapse: collapse;
+    th{
+        text-align:left;
+        background-color:#f4f4f4;
+        padding: 15px;
+        border-top: solid 3px #ddd;
+        border-bottom: solid 1px #ddd;
+    }
+    td{
+        padding: 7px 15px;
+    }
+}
+
+#message-box-container{
+    bottom:10px;
+    right:10px;
+    position: fixed;
+    z-index:10;
+
+    .message-box{
+        padding: 15px;
+        border: solid 1px #ddd;
+        background-color: #e2e2e2;
+        color: #656565;
+        font-size:11pt;
+        width:100%;
+        box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
+        margin-top: 10px;
+        @media (min-width: $break-size) {
+            width:200px;
+        }
+    }
+    .message-box.success{
+        border-left: solid 4px $success-color;
+    }
+    .message-box.fail{
+        border-left: solid 4px $error-color;
+    }
+}
+.new-button{
+    display:block;
+    text-align: right;
+    margin-top:20px;
+    margin-right:15px;
+}
+.not-admin .approve{
+    display:none;
+}
+.toggle-account{
+    color:#bbb;
+}
+.toggle-account.approved, .toggle-account.active{
+    color:$primary-color;
+}
+.toggle-account.pending{
+    color: $secondary-color;
+}
+
+.tooltip-content{
+    select{
+        background-color: #f5f5f5;
+    }
+    .tooltipster-fill{
+        margin: -8px -10px;
+        border-radius:4px;
+        overflow:hidden;
+        .fill-btn{
+            padding: 8px;
+            display:inline-block;
+            color: #ccc;
+        }
+        .fill-btn.selected, .fill-btn:hover{
+            background-color: $primary-color;
+            color: white;
+        }
+    }
+
+    td{
+        padding: 5px;
+        border: 0;
+    }
+}
+
+
+.popup-dialog{
+    position:fixed;
+    top:30%;
+    left:50%;
+    width: 450px;
+    max-width: 95%;
+    box-sizing:border-box;
+    padding: 25px;
+    border-top: solid 4px $primary-color;
+    @include prefix((transform: translateX(-50%)), webkit moz ms o);
+    background-color: white;
+    box-shadow: 0 0 20px 3px rgba(0,0,0,.3);
+    z-index: 30;
+    .btn-container{
+        text-align:right;
+        .dialog-btn{
+            min-width: 50px;
+            margin-left:5px;
+            padding: 5px;
+        }
+    }
+}
+
+.profile-title{
+    font-size: 1.3em;
+    background-color:white;
+    font-weight: 600;
+    color:#555;
+    box-sizing:border-box;
+    margin-top:0px;
+
+}
+.profile-submit{
+    max-width:400px;
+    width:100%;
+}
+.date-picker-custom .pika-button:hover{
+    background: $secondary-color;
+}
+
+#pages .img-container{
+    background-position: top;
+}
+
+#page-profile input[type='text']:not(.profile-title){
+    max-width: 400px;
+    display:block;
+}
+#page-profile select{
+    width: 100%;
+    max-width: 400px;
+}
+
+.email-content{
+    margin: 0 auto;
+    padding: 1px;
+}
+.email-section{
+    background-color: white;
+    padding: 30px;
+    margin-top: 30px;
+    .new-below{
+        font-size: 15px;
+    }
+}
+.email-section:after{
+    clear:both;
+    content:"";
+    display:block;
+}
+.section-type-picklist{
+    margin: -8px -10px;
+    a{
+        color: white;
+        width: 150px;
+        display:block;
+        font-weight: 300;
+        padding: 8px;
+    }
+    a:hover{
+        background-color: rgba(255,255,255,.2);
+        text-decoration:none;
+    }
+}
+
+.email-section .list-area{
+    max-height: 500px;
+    overflow: auto;
+}

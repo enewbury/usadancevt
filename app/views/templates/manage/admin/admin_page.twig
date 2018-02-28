@@ -1,0 +1,55 @@
+{% extends 'manage/admin/admin_base.twig' %}
+
+{% block title %}Pages:: Admin Panel{% endblock %}
+
+{% block manageBody %}
+
+    <div id="page-profile" class="site-width">
+        <div class="padding-15"></div>
+        <form method="post" class="margin-15-horiz">
+            {% include 'components/validation_box.twig' %}
+            <div class="response-box"></div>
+
+            <div class="clear row">
+                <input class="span-4-gap profile-title" type="text" placeholder="Page Name" name="pageName" value="{{ page.getName() }}">
+                <input class="span-4-gap profile-title" type="text" placeholder="Url (/pagename/etc)" name="pageUrl" {% if page.getTemplate().isLocked() %}disabled{% endif %} value="{% if page.getUrl() %}{{ page.getUrl() }}{% else %}/{{ page.getName|slugify}}{% endif %}">
+                <div class="span-4 center-text"><button class="btn-primary profile-submit" type="submit">Save Changes</button></div>
+            </div>
+            {% for component in page.getComponents() %}
+                {% set type = component.getTemplateComponent().getType() %}
+                {% set name = component.getTemplateComponent().getName() %}
+                {% set slug = component.getTemplateComponent().getSlug() %}
+                {% set val = component.getValue() %}
+
+                <div class="margin-15-top span-{{ component.getTemplateComponent().getSpan() }}-gap">
+                    {% if type == 'text' %}
+                        <label class="margin-10-vert inline-block">{{ name }}</label>
+                        <input name="{{ slug }}" type="text" value="{{ val }}">
+                    {% elseif type == 'html' %}
+                        <label class="margin-10-vert inline-block">{{ name }}</label>
+                        <textarea class="editor" name="{{ slug }}">{{ val }}</textarea>
+                    {% elseif type == 'image' %}
+                        <div class="cover-photo-container background-white border photo-picker-box">
+                            <div class="padding-12 clear">
+                                <h4 class="float-left">{{ name }}</h4>
+                                <a class="change-image float-right padding-5" id="cover-photo-button">Change</a>
+
+                            </div>
+                            <div class="img-container height-300 width-100" style="{% if val != '' %}background-image: url('{{ val }}');{% endif %}">
+                                <input type="hidden" name="{{ slug }}" value="{{ val }}">
+                            </div>
+                        </div>
+                    {% elseif type == 'form' %}
+                        <select name="{{ slug }}">
+                            {% for form in forms %}
+                                <option value="{{ form.getId() }}">{{ form.getName() }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </form>
+        <div class="padding-15-top clear-current"></div>
+    </div>
+
+{% endblock %}

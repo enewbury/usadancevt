@@ -1,0 +1,7 @@
+{% extends 'manage/admin/admin_base.twig' %}
+
+{% block manageBody %}
+    {% set panelType = 'admin' %}
+    {% set baseUrl = path_for(panelType~'EventList') %}
+    {% include 'components/event_list.twig'%}
+{% endblock %}

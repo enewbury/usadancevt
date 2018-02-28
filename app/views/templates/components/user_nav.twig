@@ -1,0 +1,17 @@
+<ul class="account-nav {{ accountPanelClass }}">
+    <li><a class="icon-right-open" id="account-nav-button"></a></li>
+    <li class="position-relative">
+        <a id="notifications-button"><i class="icon-bell"></i>{{ requests|length }}<span class="mobile-only"> Requests</span></a>
+        {% include "components/requests.twig" %}
+    </li>
+    {% if user.isActiveInstructorAdmin() %}
+        <li><a href="/instructor-panel"><i class="icon-user"></i> Instructor Panel</a></li>
+    {% endif %}
+    {% if user.isActiveOrganizationAdmin() %}
+        <li><a href="/organization-panel"><i class="icon-commerical-building"></i> Organization Panel</a></li>
+    {% endif %}
+    {% if user.isApprovedSiteAdmin() %}
+        <li><a href="/admin-panel"><i class="icon-key"></i> Admin Panel</a></li>
+    {% endif %}
+    <li><a id="account-panel-button"><i class="icon-layout"></i><span class="">{{ user.getFirstName() }} {{ user.getLastName()  }}</span></a></li>
+</ul>

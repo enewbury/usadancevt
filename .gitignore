@@ -1,0 +1,17 @@
+.DS_Store
+
+/app/cache/*
+app/secrets.php
+/app/log
+*.iml
+/vendor/
+/node_modules
+/public_html/img/uploads/
+/public_html/js/generated/
+public_html/style.css
+.htaccess
+
+# IDE Files
+#-------------------------
+/nbproject/
+.idea

@@ -1,0 +1,41 @@
+{% extends 'manage/admin/admin_base.twig' %}
+
+{% block title %}Pages:: Admin Panel{% endblock %}
+
+{% block manageBody %}
+
+    <section id="pages" class="margin-30-top padding-15 site-width">
+        <h2>Pages</h2>
+        {% include 'components/validation_box.twig' %}
+        <div class="tile-container clear">
+            {# CREATE NEW #}
+            <form method="post" class="position-relative padding-15 center-text background-white tile medium-tile-short">
+                <i class="icon-plus icon-circle-big"></i>
+                <select class="width-100 margin-15-top" name="templateId">
+                    <option value="-1">Select Template</option>
+                    {% for template in templates %}
+                        <option value="{{ template.getId() }}">{{ template.getName() }}</option>
+                    {% endfor %}
+                </select>
+                <input class="background-grey center-text" type="text" name="newpage" placeholder="Page Name">
+
+                <button type="submit" class="position-bottom position-left width-100 btn-primary">Create page</button>
+            </form>
+
+            {# pages list #}
+            {% for page in pages %}
+                <a href="{{ path_for('adminPanelPage', {'pageId': page.getId()}) }}" title="{{ page.getName() }}" class="background-white tile medium-tile-short" data-id="{{ page.getId() }}">
+                    <div class="img-container clear" style="{% if page.getTemplate().getImageLink() %}background-image: url('{{ page.getTemplate().getImageLink() }}');{% endif %}"></div>
+                    <h3 class="center-text fade">{{ page.getName() }}</h3>
+                    <div class="top-slider width-100 clear padding-12 center-text">
+                        <span style="margin-top:7px;" class="activate-switch activate-page switch dark float-left {% if page.isActive() %}on{% endif %}"></span>
+                        <span class="icon-cancel float-right btn-third red delete-page"></span>
+                    </div>
+                </a>
+            {% endfor %}
+
+
+        </div>
+    </section>
+
+{% endblock %}

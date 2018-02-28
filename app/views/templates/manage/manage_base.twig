@@ -1,0 +1,18 @@
+{% extends 'components/base.twig' %}
+{% block bodyClass %}background-dark-grey{% endblock %}
+
+{% block bottomIncludes %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/tooltipster.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/themes/tooltipster-light.min.css">
+    <link rel="stylesheet" href="/tooltipster_basic.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/js/jquery.tooltipster.min.js"></script>
+
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="/js/jquery.formatter.min.js"></script>
+    <script src="/js/jquery.plugin.min.js"></script>
+    <script src="/js/jquery.timeentry.min.js"></script>
+    <script src="/js/jquery.mobile.touches.min.js"></script>
+{% endblock %}
+{% block footer %}{% endblock %}
+{% block script %}/js/generated/manage.js{% endblock %}

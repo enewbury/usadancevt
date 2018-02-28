@@ -1,0 +1,98 @@
+
+<aside id="account-panel" class="grey-bg">
+    <div class="sticky-bottom-50-pad-15-container">
+        {# Instructor Status #}
+        <div class="request-box col-3 center-text">
+            <span>Instructor<br>Account</span><br>
+            {% if user.isActiveInstructorAdmin() %}
+                <span class="icon-check approved"></span><br>
+                <h4><a href="/account/instructor-admin/deactivate">Deactivate</a></h4>
+            {% else %}
+                <a href="/account/instructor-admin/activate">
+                    <span class="icon-plus request"></span><br>
+                    <h4 class="inherit-color">Activate</h4>
+                </a>
+            {% endif %}
+        </div>
+
+        {# Organization Admin Status #}
+        <div class="request-box col-3 center-text">
+            <span>Organization<br>Account</span><br>
+            {% if user.isActiveOrganizationAdmin() %}
+                <span class="icon-check approved"></span><br>
+                <h4><a href="/account/organization-admin/deactivate">Deactivate</a></h4>
+            {% else %}
+                <a href="/account/organization-admin/activate">
+                    <span class="icon-plus request"></span><br>
+                    <h4 class="inherit-color">Activate</h4>
+                </a>
+            {% endif %}
+        </div>
+        {# Admin Status #}
+        <div class="request-box col-3 center-text">
+            <span>Site Admin<br>Account</span><br>
+            {% if user.isApprovedSiteAdmin() %}
+                <span class="icon-check approved"></span><br>
+                <h4><a href="/account/site-admin/deactivate">Deactivate</a></h4>
+            {% elseif user.isPendingSiteAdmin() %}
+                <span class="icon-dot-3 pending"></span><br>
+                <h4><a href="/account/site-admin/deactivate">Deactivate</a></h4>
+            {% else %}
+                <a href="/account/site-admin/request">
+                    <span class="icon-plus request"></span><br>
+                    <h4 class="inherit-color">Request</h4>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="clear"></div>
+        {# Account Details #}
+
+        <section class="padding-15 left-text">
+            <h3>Account Details</h3>
+            <div class="ajax-validation"></div>
+            <div class="margin-8-top">
+                <div class="clear">
+                    <h4>Name:</h4>
+                    <span class="value">{{ user.getFirstName() }} {{ user.getLastName() }}</span>
+                    <a class="float-right form-dropdown">Change</a>
+                </div>
+                <form class="hidden" method="post">
+                    <input type="text" name="first" class="input-40" placeholder="First Name" {% if status != "success" %}value="{{ data.first }}"{% endif %}><input type="text" name="last" class="input-60" placeholder="Last Name" {% if status != "success" %}value="{{ data.last }}"{% endif %}>
+                    <button class="btn-secondary">Update</button>
+                </form>
+            </div>
+            <div class="margin-8-top">
+                <div class="clear">
+                    <h4 class="span-3-small">Email:</h4>
+                    <span class="value">{{ user.getEmail() }}</span>
+                    <a class="float-right form-dropdown">Change</a>
+                </div>
+                <form class="hidden" method="post">
+                    <input type="text" name="email" placeholder="Email" {% if status != "success" %}value="{{ data.email }}"{% endif %}>
+                    <button class="btn-secondary">Update</button>
+                </form>
+            </div>
+            <div class="margin-15-top">
+                <div class="clear">
+                    <a class="float-right form-dropdown">Change Password</a>
+                </div>
+                <form class="clear-current hidden" method="post">
+                    <input type="password" name="old" placeholder="Old Password">
+                    <input type="password" name="new" placeholder="New Password">
+                    <input type="password" name="confirm" placeholder="Confirm New Password">
+                    <button class="btn-secondary">Update</button>
+                </form>
+            </div>
+
+        </section>
+
+        {# Delete Account & Logout #}
+
+        <div class="sticky-bottom-50">
+            <a class="red-color padding-15 float-left btn-secondary delete-account" href="/account/delete"><span class="icon-cancel"></span>Delete Account</a>
+            <a class="padding-15 float-right btn-secondary" href="/logout"><span class="icon-logout"></span>Logout</a>
+        </div>
+
+    </div>
+</aside>

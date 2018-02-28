@@ -1,0 +1,125 @@
+body{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    line-height: 1.3
+}
+
+.content {
+    font-family: 'Arial', sans-serif;
+    font-size:11pt;
+    padding:8px;
+    margin-left:auto;
+    margin-right:auto;
+    color: #444;
+}
+.head{
+    height:44px;
+    padding: 8px 4px;
+    background-color: #444;
+}
+.verify{
+    display:block;
+    max-width:200px;
+    width:85%;
+    text-align:center;
+    font-size: 16px;
+    font-weight: 300;
+    background: #2895F1;
+    text-decoration:none;
+    border: 1px solid #007ee5;
+    line-height: 24px;
+    padding: 7px 16px;
+    border-radius: 5px;
+    color:white;
+}
+
+.button{
+    margin: 15px auto 0 auto;
+}
+
+.email-profile .pad-profile{
+    padding: 30px;
+}
+.email-profile .blurb{
+    font-size: 15px;
+    line-height: 20px;
+    max-height: 120px;
+    color: #777;
+    overflow:hidden;
+
+
+}
+.email-profile .blurb p{
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+.center-text{
+    text-align:center;
+}
+.event-row{
+    clear: both;
+    padding: 20px 0;
+    border-bottom: solid 1px #ddd;
+}
+.event-row h3{
+    margin-bottom: 0;
+}
+.event-img-container .date-overlay{
+    position:absolute;
+    padding-top: 10%;
+    top:0;
+    left:0;
+    width:100%;
+    height:90%;
+    background-color: rgba(0,0,0,.6);
+    color: white;
+    text-align:center;
+}
+
+.event-row .date-box{
+    padding: 8px 20px;
+    border: solid 2px #ddd;
+    border-radius: 10px;
+    display: inline-block;
+}
+.event-row .date-box span{
+    font-weight: 300;
+    font-size: 1.5em;
+    line-height: 1;
+}
+.event-row .date-box .large{
+    font-weight: 600;
+    font-size: 2em;
+}
+.event-row .event-text-portion .small-section{
+    line-height: 1;
+}
+.event-row .event-text-portion a{
+    float:right;
+}
+.event-row small{
+    color: #888;
+}
+.event-row .event-description{
+    margin-top: 5px;
+}
+
+.newsletter-section{
+    clear: both;
+    padding: 30px 5px;
+    min-width: 500px;
+}
+
+.footer{
+    clear: both;
+    margin-top: 15px;
+    background-color: #aaa;
+    text-align:center;
+    padding: 15px;
+    font-family: 'Arial', sans-serif;
+}
+.footer a{
+    color: #555;
+    font-size: 13px;
+}
