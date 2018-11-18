@@ -499,9 +499,10 @@ class EventTool
             $this->persistenceService->persistChanges();
         }
         else {
+            $this->persistenceService->removeAllEventAssociations($event);
             $this->persistenceService->deleteEvent($eventId);
         }
-        //delete associations
+
         return new SuccessResponse('Event deleted.');
     }
 
